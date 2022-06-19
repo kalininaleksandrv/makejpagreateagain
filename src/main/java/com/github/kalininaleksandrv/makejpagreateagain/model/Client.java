@@ -1,5 +1,6 @@
 package com.github.kalininaleksandrv.makejpagreateagain.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,13 +14,14 @@ import java.util.List;
 public class Client {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_client")
     private Integer id;
 
     private String name;
     private int age;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = {CascadeType.ALL})
+    @JsonManagedReference
     private List<Account> accounts = new ArrayList<>();
 }

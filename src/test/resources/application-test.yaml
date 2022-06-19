@@ -15,7 +15,7 @@ spring:
         session:
           events:
             log:
-              LOG_QUERIES_SLOWER_THAN_MS: 1
+              LOG_QUERIES_SLOWER_THAN_MS: 3
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
   h2:
     console:

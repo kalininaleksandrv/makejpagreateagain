@@ -1,11 +1,13 @@
 package com.github.kalininaleksandrv.makejpagreateagain.service;
 
-import com.github.kalininaleksandrv.makejpagreateagain.exception.AccountProcessingException;
+import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
+import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -13,21 +15,25 @@ import java.util.Optional;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
+    private final AccountRepository accountRepository;
 
     @Override
-    public Client addNewClient(Client client) {
-        if(client.getId() != null){
-            Optional<Client> byId = clientRepository.findById(client.getId());
-            if(byId.isPresent()){
-                throw new AccountProcessingException("if client already exist client it must be modifying");
-            }
-            client.setId(null);
+    public Client saveClient(Client client) {
+        Client savedClient = clientRepository.save(client);
+        List<Account> acs = savedClient.getAccounts();
+        for (Account a: acs) {
+            a.setClient(client);
         }
-        return clientRepository.save(client);
+        return savedClient;
     }
 
     @Override
-    public Client findClientById(Integer id) {
-        return null;
+    public Optional<Client> findClientById(Integer id) {
+        return clientRepository.findById(id);
+    }
+
+    @Override
+    public Iterable<Client> findAll() {
+        return clientRepository.findAll();
     }
 }
