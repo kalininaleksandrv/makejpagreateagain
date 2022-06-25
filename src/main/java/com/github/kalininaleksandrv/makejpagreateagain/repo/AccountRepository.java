@@ -7,9 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface AccountRepository extends CrudRepository<Account, Integer> {
 
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
-            attributePaths = {
-                    "client"
-            })
+            value = "account-client-entity-graph")
     @Override
     Iterable<Account> findAll();
 }

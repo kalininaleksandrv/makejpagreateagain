@@ -4,12 +4,9 @@ import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
-import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor

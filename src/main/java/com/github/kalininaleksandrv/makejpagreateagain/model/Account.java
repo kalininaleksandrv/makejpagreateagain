@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+@NamedEntityGraph(name = "account-client-entity-graph",
+        attributeNodes = {@NamedAttributeNode(value = "client")})
 @Entity
 @Getter
 @Setter
