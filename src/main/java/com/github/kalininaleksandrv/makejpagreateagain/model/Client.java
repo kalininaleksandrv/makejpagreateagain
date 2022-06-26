@@ -24,6 +24,7 @@ public class Client {
     private String name;
     private int age;
 
+    @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties("client")
     @OneToMany(mappedBy = "client", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<Account> accounts = new ArrayList<>();
