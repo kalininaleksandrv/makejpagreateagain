@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@NamedEntityGraph(name = "account-client-entity-graph",
+@NamedEntityGraph(name = Account.ACCOUNT_CLIENT_ENTITY_GRAPH,
         attributeNodes = {@NamedAttributeNode(value = "client")})
 @Entity
 @Getter
@@ -15,6 +15,7 @@ import javax.persistence.*;
 @EqualsAndHashCode
 public class Account {
 
+    public static final String ACCOUNT_CLIENT_ENTITY_GRAPH = "account-client-entity-graph";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_account")

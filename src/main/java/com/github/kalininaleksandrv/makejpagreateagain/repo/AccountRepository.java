@@ -8,7 +8,7 @@ public interface AccountRepository extends CrudRepository<Account, Integer> {
 
     //this is named entity graph fore avoiding n+1 problem, name defines in entity
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
-            value = "account-client-entity-graph")
+            value = Account.ACCOUNT_CLIENT_ENTITY_GRAPH)
     @Override
     Iterable<Account> findAll();
 }
