@@ -1,6 +1,8 @@
 package com.github.kalininaleksandrv.makejpagreateagain.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +23,7 @@ public class Client {
     private String name;
     private int age;
 
-    @OneToMany(mappedBy = "client", cascade = {CascadeType.ALL})
-    @JsonManagedReference
+    @JsonIgnoreProperties("client")
+    @OneToMany(mappedBy = "client", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<Account> accounts = new ArrayList<>();
 }

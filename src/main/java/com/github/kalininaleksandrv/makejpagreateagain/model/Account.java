@@ -1,6 +1,6 @@
 package com.github.kalininaleksandrv.makejpagreateagain.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +23,7 @@ public class Account {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_client")
-    @JsonBackReference
+    @JsonIgnoreProperties("accounts")
     private Client client;
 
     @Override

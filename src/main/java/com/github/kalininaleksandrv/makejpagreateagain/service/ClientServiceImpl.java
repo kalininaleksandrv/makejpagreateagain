@@ -7,6 +7,7 @@ import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +21,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client saveClient(Client client) {
         Client savedClient = clientRepository.save(client);
-        List<Account> acs = savedClient.getAccounts();
+        List<Account> acs = new ArrayList<>(savedClient.getAccounts());
         for (Account a: acs) {
             a.setClient(client);
         }
+        accountRepository.saveAll(acs);
         return savedClient;
     }
 
