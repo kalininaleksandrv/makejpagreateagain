@@ -18,13 +18,12 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_account")
-    @EqualsAndHashCode.Exclude
     private Integer id;
 
     private int amount; // TODO: 19.06.2022 to BigDecimal
     private String currency; // TODO: 19.06.2022 to Enum
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_client")
     @JsonIgnoreProperties("accounts")
     @EqualsAndHashCode.Exclude
