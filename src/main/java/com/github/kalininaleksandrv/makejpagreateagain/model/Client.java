@@ -18,10 +18,13 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_client")
+    @EqualsAndHashCode.Exclude
     private Integer id;
 
     private String name;
     private int age;
+
+    // TODO: 26.06.2022 add business-key
 
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties("client")

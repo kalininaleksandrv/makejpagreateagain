@@ -19,10 +19,13 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_account")
+    @EqualsAndHashCode.Exclude
     private Integer id;
 
     private int amount; // TODO: 19.06.2022 to BigDecimal
     private String currency; // TODO: 19.06.2022 to Enum
+
+    // TODO: 26.06.2022 add business-key
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_client")
