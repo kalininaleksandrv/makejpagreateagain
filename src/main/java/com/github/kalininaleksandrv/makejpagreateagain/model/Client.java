@@ -1,8 +1,7 @@
 package com.github.kalininaleksandrv.makejpagreateagain.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,11 +12,13 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_client")
+    @EqualsAndHashCode.Exclude
     private Integer id;
 
     private String name;

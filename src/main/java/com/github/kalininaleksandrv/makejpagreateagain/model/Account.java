@@ -1,6 +1,7 @@
 package com.github.kalininaleksandrv.makejpagreateagain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,11 +12,13 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_account")
+    @EqualsAndHashCode.Exclude
     private Integer id;
 
     private int amount; // TODO: 19.06.2022 to BigDecimal
@@ -25,16 +28,4 @@ public class Account {
     @JoinColumn(name = "id_client")
     @JsonIgnoreProperties("accounts")
     private Client client;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Account )) return false;
-        return id != null && id.equals(((Account) o).getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }
