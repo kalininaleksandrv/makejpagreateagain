@@ -25,6 +25,7 @@ public class Client {
     private int age;
 
     // TODO: 26.06.2022 add business-key
+    // TODO: 05.08.2022 add custom getter and helper methods
 
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties("client")
