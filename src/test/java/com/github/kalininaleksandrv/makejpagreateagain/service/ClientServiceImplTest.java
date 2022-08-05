@@ -33,7 +33,7 @@ class ClientServiceImplTest {
         client.setName("Vasily");
         client.getAccounts().add(account);
         Client res = clientService.saveClient(client);
-        assertEquals(1, res.getId());
+        assertNotNull(res.getId());
     }
 
     @Test
