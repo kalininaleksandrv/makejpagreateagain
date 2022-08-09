@@ -20,13 +20,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client saveClient(Client client) {
-        Client savedClient = clientRepository.save(client);
-        List<Account> acs = new ArrayList<>(savedClient.getAccounts());
-        for (Account a: acs) {
+
+        for (Account a: client.getAccounts()) {
             a.setClient(client);
         }
-        accountRepository.saveAll(acs);
-        return savedClient;
+        return clientRepository.save(client);
     }
 
     @Override

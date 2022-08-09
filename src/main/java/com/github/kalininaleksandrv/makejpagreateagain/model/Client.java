@@ -4,15 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.mapping.Collection;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
+@EqualsAndHashCode
 @Getter
 @Setter
-@EqualsAndHashCode
 public class Client {
 
     @Id
@@ -31,4 +33,9 @@ public class Client {
     @JsonIgnoreProperties("client")
     @OneToMany(mappedBy = "client", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<Account> accounts = new ArrayList<>();
+
+    public List<Account> getAccounts() {
+        return Collections.unmodifiableList(accounts);
+    }
+
 }

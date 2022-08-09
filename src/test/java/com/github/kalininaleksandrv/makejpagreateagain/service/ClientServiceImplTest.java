@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,7 +33,9 @@ class ClientServiceImplTest {
         Client client = new Client();
         client.setAge(20);
         client.setName("Vasily");
-        client.getAccounts().add(account);
+        List<Account> accounts = new ArrayList<>();
+        accounts.add(account);
+        client.setAccounts(accounts);
         Client res = clientService.saveClient(client);
         assertNotNull(res.getId());
     }
@@ -44,7 +48,9 @@ class ClientServiceImplTest {
         Client client = new Client();
         client.setAge(20);
         client.setName("Vasily");
-        client.getAccounts().add(account);
+        List<Account> accounts = new ArrayList<>();
+        accounts.add(account);
+        client.setAccounts(accounts);
         clientRepository.save(client);
         client.setName("Peter");
         Client res = clientService.saveClient(client);
@@ -59,7 +65,9 @@ class ClientServiceImplTest {
         Client client = new Client();
         client.setAge(20);
         client.setName("Vasily");
-        client.getAccounts().add(account);
+        List<Account> accounts = new ArrayList<>();
+        accounts.add(account);
+        client.setAccounts(accounts);
         Integer id = clientRepository.save(client).getId();
         Optional<Client> clientById = clientService.findClientById(id);
         assertNotNull(clientById.get());
