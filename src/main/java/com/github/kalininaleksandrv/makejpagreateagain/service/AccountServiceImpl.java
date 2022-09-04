@@ -61,4 +61,10 @@ public class AccountServiceImpl implements AccountService{
         }
         return accountRepository.save(account);
     }
+
+    @Override
+    public Account findAccountById(int i) {
+        return accountRepository.findById(i).orElseThrow(() ->
+                new AccountProcessingException("no account with such id founded"));
+    }
 }

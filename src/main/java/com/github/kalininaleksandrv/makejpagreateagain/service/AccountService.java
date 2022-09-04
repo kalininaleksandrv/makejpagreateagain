@@ -6,4 +6,5 @@ public interface AccountService {
     Iterable<Account> findAll();
     Account saveAccount(Account account);
 
+    Account findAccountById(int i);
 }

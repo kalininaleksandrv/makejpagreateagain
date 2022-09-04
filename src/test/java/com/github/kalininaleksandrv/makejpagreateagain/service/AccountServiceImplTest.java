@@ -3,34 +3,27 @@ package com.github.kalininaleksandrv.makejpagreateagain.service;
 import com.github.kalininaleksandrv.makejpagreateagain.exception.AccountProcessingException;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
-import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AccountServiceImplTest {
+
+class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
 
     @Autowired
     AccountServiceImpl accountService;
 
-    @Autowired
-    ClientRepository clientRepository;
-
     @Test
+    @Order(1)
     void findAll() {
-
+        Iterable<Account> savedAccount = accountService.findAll();
+        assertEquals(3, savedAccount.spliterator().estimateSize());
     }
 
     @Test
+    @Order(2)
     void saveAccountNewClient() {
         Account account = new Account();
         account.setAmount(100);
@@ -40,74 +33,54 @@ class AccountServiceImplTest {
         client.setName("Vasily");
         account.setClient(client);
         Account res = accountService.saveAccount(account);
-        Client res_c = clientRepository.findClientByName("Vasily");
+        Client res_c = clientRepository.findByName("Vasily");
         assertEquals(100, res.getAmount());
         assertNotNull(res_c.getId());
     }
 
     @Test
+    @Order(3)
     void saveAccountExistingClient() {
         Account account = new Account();
         account.setAmount(100);
         account.setCurrency("RUB");
-        Client client = new Client();
-        client.setAge(20);
-        client.setName("Vasily");
-        Client savedClient = clientRepository.save(client);
+        Client savedClient = clientRepository.findByName("First Client");
         savedClient.setName("name which must be ignored");
         account.setClient(savedClient);
         Account res = accountService.saveAccount(account);
         assertEquals(100, res.getAmount());
-        assertEquals("Vasily", res.getClient().getName());
+        assertEquals("First Client", res.getClient().getName());
     }
 
     @Test
+    @Order(4)
     void updateExistingAccountWithExistingClient(){
-        Account account = new Account();
-        account.setAmount(100);
-        account.setCurrency("RUB");
-        Client client = new Client();
-        client.setAge(20);
-        client.setName("Vasily");
-        account.setClient(client);
-        Account savedAccount = accountService.saveAccount(account);
+        Account savedAccount = accountService.findAll().iterator().next();
         savedAccount.setAmount(100_000);
         savedAccount.getClient().setName("name which must be ignored");
         Account updatedAccount = accountService.saveAccount(savedAccount);
         assertEquals(100000, updatedAccount.getAmount());
         assertEquals(savedAccount.getId(), updatedAccount.getId());
-
-        List<Client> result = new ArrayList<>();
-        clientRepository.findAll().forEach(result::add);
-        assertEquals(1, result.size());
-        assertEquals(savedAccount.getClient().getId(), result.get(0).getId());
+        assertEquals(savedAccount.getClient().getId(), clientRepository.findAll().iterator().next().getId());
     }
 
     @Test
+    @Order(5)
     void updateExistingAccountWithWrongClient(){
-        Account account = new Account();
-        account.setAmount(100);
-        account.setCurrency("RUB");
+        Account account = accountService.findAll().iterator().next();
         Client client = new Client();
-        client.setAge(20);
-        client.setName("Vasily");
-        account.setClient(client);
-        Account savedAccount = accountService.saveAccount(account);
         client.setId(100);
-        assertThrows(AccountProcessingException.class, () -> accountService.saveAccount(savedAccount));
+        account.setClient(client);
+        assertThrows(AccountProcessingException.class, () -> accountService.saveAccount(account));
     }
 
     @Test
+    @Order(6)
     void updateExistingAccountWithNewClient(){
-        Account account = new Account();
-        account.setAmount(100);
-        account.setCurrency("RUB");
+        Account account = accountService.findAll().iterator().next();
         Client client = new Client();
-        client.setAge(20);
-        client.setName("Vasily");
-        account.setClient(client);
-        Account savedAccount = accountService.saveAccount(account);
         client.setId(null);
-        assertThrows(AccountProcessingException.class, () -> accountService.saveAccount(savedAccount));
+        account.setClient(client);
+        assertThrows(AccountProcessingException.class, () -> accountService.saveAccount(account));
     }
 }

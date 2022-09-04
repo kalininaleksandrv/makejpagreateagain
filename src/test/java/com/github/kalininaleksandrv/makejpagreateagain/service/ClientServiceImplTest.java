@@ -2,28 +2,21 @@ package com.github.kalininaleksandrv.makejpagreateagain.service;
 
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
-import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ClientServiceImplTest {
+class ClientServiceImplTest extends UserAndAccountBaseApplicationTests {
 
     @Autowired
     ClientServiceImpl clientService;
-
-    @Autowired
-    ClientRepository clientRepository;
 
     @Test
     void saveClient() {
@@ -41,16 +34,13 @@ class ClientServiceImplTest {
     }
 
     @Test
+    @Transactional
+    /*
+    we add @Transactional annotation to avoid "Lazy init" exception on Accounts fetching,
+    despite in a real call we fetch accounts without transactional (using named entity graph)
+     */
     void saveClientWithId() {
-        Account account = new Account();
-        account.setAmount(100);
-        account.setCurrency("RUB");
-        Client client = new Client();
-        client.setAge(20);
-        client.setName("Vasily");
-        List<Account> accounts = new ArrayList<>();
-        accounts.add(account);
-        client.setAccounts(accounts);
+        Client client = clientRepository.findById(1).orElseThrow(() -> new RuntimeException(this.getClass().getSimpleName()));
         clientRepository.save(client);
         client.setName("Peter");
         Client res = clientService.saveClient(client);
@@ -59,17 +49,7 @@ class ClientServiceImplTest {
 
     @Test
     void findClientById() {
-        Account account = new Account();
-        account.setAmount(100);
-        account.setCurrency("RUB");
-        Client client = new Client();
-        client.setAge(20);
-        client.setName("Vasily");
-        List<Account> accounts = new ArrayList<>();
-        accounts.add(account);
-        client.setAccounts(accounts);
-        Integer id = clientRepository.save(client).getId();
-        Optional<Client> clientById = clientService.findClientById(id);
-        assertNotNull(clientById.get());
+        Optional<Client> clientById = clientService.findClientById(1);
+        assertEquals(1, clientById.orElseThrow(() -> new RuntimeException(this.getClass().getSimpleName())).getId());
     }
 }
