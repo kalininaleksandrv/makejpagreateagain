@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.StreamSupport;
 
@@ -29,4 +27,11 @@ public class AccountController {
         }
         return new ResponseEntity<>(foundedAccounts, HttpStatus.OK);
     }
+
+    @PostMapping(path = "account")
+    public ResponseEntity<Account> account(@RequestBody Account account) {
+        return new ResponseEntity<>(accountService.saveAccount(account), HttpStatus.OK);
+    }
+
+    // TODO: 09.08.2022 add method to add new account and to change existing account
 }

@@ -1,12 +1,16 @@
 package com.github.kalininaleksandrv.makejpagreateagain.service;
 
+import com.github.kalininaleksandrv.makejpagreateagain.exception.AccountProcessingException;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
+import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountRepository;
+import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +18,7 @@ import java.util.Iterator;
 public class AccountServiceImpl implements AccountService{
 
     private final AccountRepository accountRepository;
+    private final ClientRepository clientRepository;
     @Override
     public Iterable<Account> findAll() {
         Iterable<Account> allAccounts = accountRepository.findAll();
@@ -26,5 +31,34 @@ public class AccountServiceImpl implements AccountService{
         Iterator<Account> iter = allAccounts.iterator();
         iter.forEachRemaining(i -> log.info(i.getClient().getName()));
         return allAccounts;
+    }
+
+    @Override
+    public Account saveAccount(Account account) {
+        // TODO: 04.09.2022 it must be impossible to add new client without ID on existing account
+        if(account.getClient() == null) throw new AccountProcessingException("account must contain client info");
+        if(account.getClient().getId() != null){
+            Optional<Client> clientFromDb = clientRepository.findById(account.getClient().getId());
+            /*
+            if the Client object from request contains changes, they will not be saved,
+            because object from db will replace it
+             */
+            account.setClient(clientFromDb.orElseThrow(() ->
+                    new AccountProcessingException("client, which has been referenced by account - not found")));
+        } else {
+            if(account.getId()!=null) throw new AccountProcessingException("unable to create new client with existing account");
+                /*
+                to avoid "transient instance exception" in saveAccount method we must either save new client
+                before save account explicitly or add CascadeType.PERSIST to Client relation in account for Hibernate
+                perform save operation for us
+                but since new client have no Id, adding CascadeType.PERSIST will break work with already existing clients
+                with "detached entity passed to persist" exception
+                The exception comes as hibernate trying to persist associated products when you save reservation.
+                Persisting the products is only success if they have no id because id of Client is annotated
+                @GeneratedValue(strategy = GenerationType.SEQUENCE)
+                */
+            clientRepository.save(account.getClient());
+        }
+        return accountRepository.save(account);
     }
 }
