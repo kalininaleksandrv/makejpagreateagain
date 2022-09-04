@@ -28,20 +28,20 @@ abstract class UserAndAccountBaseApplicationTests {
 	void beforeAll() {
 		Client entity = generateClient();
 		clientRepository.save(entity);
+		// TODO: 04.09.2022 batch insert in DB
 		accountRepository.saveAll(addAccountsToClient(entity));
 	}
 
 	private List<Account> addAccountsToClient(Client entity) {
-		Account account = new Account();
-		account.setAmount(100);
-		account.setCurrency("RUB");
-		Account account2 = new Account();
-		account.setAmount(200);
-		account.setCurrency("RUB");
+
 		List<Account> accounts = new ArrayList<>();
-		accounts.add(account);
-		accounts.add(account2);
-		accounts.forEach(i -> i.setClient(entity));
+		for (int i = 1; i<11; i++){
+			Account account = new Account();
+			account.setAmount(i*100);
+			account.setCurrency("RUB");
+			account.setClient(entity);
+			accounts.add(account);
+		}
 		return accounts;
 	}
 

@@ -3,13 +3,15 @@ package com.github.kalininaleksandrv.makejpagreateagain.service;
 import com.github.kalininaleksandrv.makejpagreateagain.exception.AccountProcessingException;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
 
     @Autowired
@@ -19,7 +21,7 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     @Order(1)
     void findAll() {
         Iterable<Account> savedAccount = accountService.findAll();
-        assertEquals(3, savedAccount.spliterator().estimateSize());
+        assertEquals(10, savedAccount.spliterator().estimateSize());
     }
 
     @Test
