@@ -17,7 +17,7 @@ public class Account {
 
     public static final String ACCOUNT_CLIENT_ENTITY_GRAPH = "account-client-entity-graph";
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id_account")
     @EqualsAndHashCode.Exclude
     private Integer id;
@@ -32,4 +32,9 @@ public class Account {
     @JsonIgnoreProperties("accounts")
     @EqualsAndHashCode.Exclude
     private Client client;
+
+    public void addClient(Client client) {
+        this.client = client;
+        client.addAccount(this);
+    }
 }

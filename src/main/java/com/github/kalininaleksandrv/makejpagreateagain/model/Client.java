@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.mapping.Collection;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.List;
 public class Client {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id_client")
     @EqualsAndHashCode.Exclude
     private Integer id;
@@ -36,6 +35,11 @@ public class Client {
 
     public List<Account> getAccounts() {
         return Collections.unmodifiableList(accounts);
+    }
+
+    public void addAccount(Account account) {
+        accounts.add(account);
+        account.setClient(this);
     }
 
 }
