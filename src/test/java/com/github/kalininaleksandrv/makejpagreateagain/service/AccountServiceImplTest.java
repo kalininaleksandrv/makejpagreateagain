@@ -3,7 +3,6 @@ package com.github.kalininaleksandrv.makejpagreateagain.service;
 import com.github.kalininaleksandrv.makejpagreateagain.exception.AccountProcessingException;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
-import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,9 +24,6 @@ class AccountServiceImplTest {
 
     @Autowired
     ClientRepository clientRepository;
-
-    @Autowired
-    AccountRepository accountRepository;
 
     @Test
     void findAll() {
