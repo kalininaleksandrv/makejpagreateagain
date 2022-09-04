@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.stream.StreamSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,12 +21,9 @@ public class AccountController {
 
     @GetMapping(path = "accounts")
     public ResponseEntity<Iterable<Account>> accounts() {
-        var foundedAccounts = accountService.findAll();
-        long count = StreamSupport.stream(foundedAccounts.spliterator(), false).count();
-        if(count==0) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(foundedAccounts, HttpStatus.OK);
+        List<Account> accounts = new ArrayList<>();
+        accountService.findAll().forEach(accounts::add);
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
     @PostMapping(path = "account")
