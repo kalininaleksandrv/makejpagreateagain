@@ -39,7 +39,7 @@ public class ClientController {
         return new ResponseEntity<>(savedPerson, HttpStatus.OK);
     }
 
-    @PostMapping(path = "clientage")
+    @PatchMapping(path = "client")
     public ResponseEntity<Client> newClientWithAge(@RequestBody Client client, int age) {
         var savedPerson = clientService.saveClientWithAge(client, age);
         return new ResponseEntity<>(savedPerson, HttpStatus.OK);
