@@ -52,4 +52,21 @@ class ClientServiceImplTest extends UserAndAccountBaseApplicationTests {
         Optional<Client> clientById = clientService.findClientById(1);
         assertEquals(1, clientById.orElseThrow(() -> new RuntimeException(this.getClass().getSimpleName())).getId());
     }
+
+    @Test
+    void saveClientWithAge() {
+        Account account = new Account();
+        account.setAmount(100);
+        account.setCurrency("RUB");
+        Client client = new Client();
+        client.setAge(20);
+        client.setName("Vasily");
+        List<Account> accounts = new ArrayList<>();
+        accounts.add(account);
+        client.setAccounts(accounts);
+        clientService.saveClientWithAge(client, 100);
+        Client fetchedClient = clientRepository.findByName("Vasily");
+        assertEquals(100, fetchedClient.getAge());
+
+    }
 }

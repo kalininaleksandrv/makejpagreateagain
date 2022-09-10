@@ -17,6 +17,7 @@ import java.util.List;
 @Slf4j
 public class AccountController {
 
+    // TODO: 07.09.2022 add @Transaction and pessimistic/optimistic lock
     private final AccountService accountService;
 
     @GetMapping(path = "accounts")
@@ -30,6 +31,4 @@ public class AccountController {
     public ResponseEntity<Account> account(@RequestBody Account account) {
         return new ResponseEntity<>(accountService.saveAccount(account), HttpStatus.OK);
     }
-
-    // TODO: 09.08.2022 add method to add new account and to change existing account
 }

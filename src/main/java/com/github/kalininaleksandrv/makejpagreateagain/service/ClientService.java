@@ -10,4 +10,6 @@ public interface ClientService {
     Optional<Client> findClientById(Integer id);
 
     Iterable<Client> findAll();
+
+    Client saveClientWithAge(Client client, int age);
 }
