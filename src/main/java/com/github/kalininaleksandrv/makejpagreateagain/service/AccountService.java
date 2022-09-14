@@ -3,6 +3,8 @@ package com.github.kalininaleksandrv.makejpagreateagain.service;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
 
+import java.util.List;
+
 public interface AccountService {
     Iterable<Account> findAll();
     Account saveAccount(Account account);
@@ -10,4 +12,6 @@ public interface AccountService {
     Account findAccountById(int i);
 
     int countAccountsByCurrency(Currency currency);
+
+    List<Account> findAllByAmountAndCurrency(int amount, Currency currency);
 }

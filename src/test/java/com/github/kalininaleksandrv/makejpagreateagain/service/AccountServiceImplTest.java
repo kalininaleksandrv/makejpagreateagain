@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -91,5 +93,16 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     void countAccountsByCurrency() {
         int res = accountService.countAccountsByCurrency(Currency.USD);
         assertEquals(5, res);
+    }
+
+    @Test
+    void findAllByAmountAndCurrency() {
+        List<Account> res = accountService.findAllByAmountAndCurrency(500, Currency.EUR);
+        assertAll(
+                () -> assertEquals(3, res.size()),
+                () -> assertTrue(res.get(0).getAmount()>=500),
+                () -> assertTrue(res.get(1).getAmount()>=500),
+                () -> assertTrue(res.get(2).getAmount()>=500)
+        );
     }
 }

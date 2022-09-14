@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,5 +75,10 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public int countAccountsByCurrency(Currency currency) {
         return accountQueryRepository.findNumberOfAccountsByCurrency(currency);
+    }
+
+    @Override
+    public List<Account> findAllByAmountAndCurrency(int amount, Currency currency) {
+        return accountQueryRepository.findByAmountAndCurrency(amount, currency);
     }
 }
