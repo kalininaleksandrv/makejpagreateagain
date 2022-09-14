@@ -2,6 +2,7 @@ package com.github.kalininaleksandrv.makejpagreateagain.service;
 
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
+import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

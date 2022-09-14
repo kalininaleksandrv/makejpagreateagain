@@ -3,6 +3,8 @@ package com.github.kalininaleksandrv.makejpagreateagain.service;
 import com.github.kalininaleksandrv.makejpagreateagain.exception.AccountProcessingException;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
+import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
+import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountQueryRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class AccountServiceImpl implements AccountService{
 
     private final AccountRepository accountRepository;
+    private final AccountQueryRepository accountQueryRepository;
     private final ClientRepository clientRepository;
     @Override
     public Iterable<Account> findAll() {
@@ -66,5 +69,10 @@ public class AccountServiceImpl implements AccountService{
     public Account findAccountById(int i) {
         return accountRepository.findById(i).orElseThrow(() ->
                 new AccountProcessingException("no account with such id founded"));
+    }
+
+    @Override
+    public int countAccountsByCurrency(Currency currency) {
+        return accountQueryRepository.findNumberOfAccountsByCurrency(currency);
     }
 }

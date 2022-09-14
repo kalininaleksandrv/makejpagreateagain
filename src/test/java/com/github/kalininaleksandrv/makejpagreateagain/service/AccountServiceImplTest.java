@@ -86,4 +86,10 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
         account.setClient(client);
         assertThrows(AccountProcessingException.class, () -> accountService.saveAccount(account));
     }
+
+    @Test
+    void countAccountsByCurrency() {
+        int res = accountService.countAccountsByCurrency(Currency.USD);
+        assertEquals(5, res);
+    }
 }
