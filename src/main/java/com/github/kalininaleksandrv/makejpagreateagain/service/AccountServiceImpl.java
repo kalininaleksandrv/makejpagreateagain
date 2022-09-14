@@ -78,6 +78,11 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    public int countAccountsLessThenAmount(int amount) {
+        return accountQueryRepository.findNumberOfAccountsLessThenAmount(amount);
+    }
+
+    @Override
     public List<Account> findAllByAmountAndCurrency(int amount, Currency currency) {
         return accountQueryRepository.findByAmountAndCurrency(amount, currency);
     }

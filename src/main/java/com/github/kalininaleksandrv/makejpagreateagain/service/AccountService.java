@@ -13,5 +13,7 @@ public interface AccountService {
 
     int countAccountsByCurrency(Currency currency);
 
+    int countAccountsLessThenAmount(int amount);
+
     List<Account> findAllByAmountAndCurrency(int amount, Currency currency);
 }

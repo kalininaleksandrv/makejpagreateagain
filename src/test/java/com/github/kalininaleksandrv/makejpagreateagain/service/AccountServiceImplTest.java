@@ -105,4 +105,10 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
                 () -> assertTrue(res.get(2).getAmount()>=500)
         );
     }
+
+    @Test
+    void countAccountsLessThenAmount() {
+        int res = accountService.countAccountsLessThenAmount(501);
+        assertEquals(res, 5);
+    }
 }
