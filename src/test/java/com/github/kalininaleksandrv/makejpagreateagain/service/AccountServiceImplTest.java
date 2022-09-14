@@ -3,6 +3,7 @@ package com.github.kalininaleksandrv.makejpagreateagain.service;
 import com.github.kalininaleksandrv.makejpagreateagain.exception.AccountProcessingException;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
+import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     void saveAccountNewClient() {
         Account account = new Account();
         account.setAmount(100);
-        account.setCurrency("RUB");
+        account.setCurrency(Currency.USD);
         Client client = new Client();
         client.setAge(20);
         client.setName("Vasily");
@@ -45,7 +46,7 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     void saveAccountExistingClient() {
         Account account = new Account();
         account.setAmount(100);
-        account.setCurrency("RUB");
+        account.setCurrency(Currency.USD);
         Client savedClient = clientRepository.findByName("First Client");
         savedClient.setName("name which must be ignored");
         account.setClient(savedClient);

@@ -22,7 +22,7 @@ class ClientServiceImplTest extends UserAndAccountBaseApplicationTests {
     void saveClient() {
         Account account = new Account();
         account.setAmount(100);
-        account.setCurrency("RUB");
+        account.setCurrency(Currency.USD);
         Client client = new Client();
         client.setAge(20);
         client.setName("Vasily");
@@ -57,7 +57,7 @@ class ClientServiceImplTest extends UserAndAccountBaseApplicationTests {
     void saveClientWithAge() {
         Account account = new Account();
         account.setAmount(100);
-        account.setCurrency("RUB");
+        account.setCurrency(Currency.USD);
         Client client = new Client();
         client.setAge(20);
         client.setName("Vasily");

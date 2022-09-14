@@ -38,7 +38,11 @@ abstract class UserAndAccountBaseApplicationTests {
 		for (int i = 1; i<11; i++){
 			Account account = new Account();
 			account.setAmount(i*100);
-			account.setCurrency("RUB");
+			if(i%2!=0){
+				account.setCurrency(Currency.EUR);
+			} else {
+				account.setCurrency(Currency.USD);
+			}
 			account.setClient(entity);
 			accounts.add(account);
 		}
