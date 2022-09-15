@@ -2,6 +2,7 @@ package com.github.kalininaleksandrv.makejpagreateagain.repo;
 
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +30,14 @@ public interface AccountQueryRepository extends JpaRepository<Account, Long> {
      */
     @Query(value = "SELECT COUNT(*) FROM ACCOUNT WHERE AMOUNT < ?1", nativeQuery = true)
     int findNumberOfAccountsLessThenAmount(int amount);
+
+    /*
+    JPQL query
+    here we use #{#entityName} to point out to Entity of repo (Account)
+     */
+    @Query("select a from #{#entityName} a where a.currency = ?1")
+    List<Account> findByCurrencyAndSort(Currency currency, Sort sort);
+
+    // TODO: 15.09.2022 jpql join to avoid n+1 problem
+    // TODO: 15.09.2022 findByAccountCurrencyAndClientNameLike (with join)
 }

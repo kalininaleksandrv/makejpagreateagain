@@ -9,6 +9,7 @@ import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
@@ -85,5 +86,10 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public List<Account> findAllByAmountAndCurrency(int amount, Currency currency) {
         return accountQueryRepository.findByAmountAndCurrency(amount, currency);
+    }
+
+    @Override
+    public List<Account> findByCurrencyAndSort(Currency currency, Sort sort) {
+        return accountQueryRepository.findByCurrencyAndSort(currency, sort);
     }
 }

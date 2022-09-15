@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 
 import java.util.List;
 
@@ -29,6 +31,45 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
 
     @Test
     @Order(2)
+    void countAccountsByCurrency() {
+        int res = accountService.countAccountsByCurrency(Currency.USD);
+        assertEquals(5, res);
+    }
+
+    @Test
+    @Order(3)
+    void findAllByAmountAndCurrency() {
+        List<Account> res = accountService.findAllByAmountAndCurrency(500, Currency.EUR);
+        assertAll(
+                () -> assertEquals(3, res.size()),
+                () -> assertTrue(res.get(0).getAmount()>=500),
+                () -> assertTrue(res.get(1).getAmount()>=500),
+                () -> assertTrue(res.get(2).getAmount()>=500)
+        );
+    }
+
+    @Test
+    @Order(4)
+    void countAccountsLessThenAmount() {
+        int res = accountService.countAccountsLessThenAmount(501);
+        assertEquals(res, 5);
+    }
+
+    @Test
+    @Order(5)
+    void findByAmountAndSort() {
+        List<Account> res = accountService.findByCurrencyAndSort(Currency.EUR,
+                JpaSort.by(Sort.Direction.DESC, "amount"));
+        assertAll(
+                () -> assertEquals(5, res.size()),
+                () -> assertTrue(res.get(0).getAmount()>=900),
+                () -> assertTrue(res.get(1).getAmount()>=700),
+                () -> assertTrue(res.get(2).getAmount()>=500)
+        );
+    }
+
+    @Test
+    @Order(6)
     void saveAccountNewClient() {
         Account account = new Account();
         account.setAmount(100);
@@ -44,7 +85,7 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     }
 
     @Test
-    @Order(3)
+    @Order(7)
     void saveAccountExistingClient() {
         Account account = new Account();
         account.setAmount(100);
@@ -58,7 +99,7 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     }
 
     @Test
-    @Order(4)
+    @Order(8)
     void updateExistingAccountWithExistingClient(){
         Account savedAccount = accountService.findAll().iterator().next();
         savedAccount.setAmount(100_000);
@@ -70,7 +111,7 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     }
 
     @Test
-    @Order(5)
+    @Order(9)
     void updateExistingAccountWithWrongClient(){
         Account account = accountService.findAll().iterator().next();
         Client client = new Client();
@@ -80,35 +121,12 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     }
 
     @Test
-    @Order(6)
+    @Order(10)
     void updateExistingAccountWithNewClient(){
         Account account = accountService.findAll().iterator().next();
         Client client = new Client();
         client.setId(null);
         account.setClient(client);
         assertThrows(AccountProcessingException.class, () -> accountService.saveAccount(account));
-    }
-
-    @Test
-    void countAccountsByCurrency() {
-        int res = accountService.countAccountsByCurrency(Currency.USD);
-        assertEquals(5, res);
-    }
-
-    @Test
-    void findAllByAmountAndCurrency() {
-        List<Account> res = accountService.findAllByAmountAndCurrency(500, Currency.EUR);
-        assertAll(
-                () -> assertEquals(3, res.size()),
-                () -> assertTrue(res.get(0).getAmount()>=500),
-                () -> assertTrue(res.get(1).getAmount()>=500),
-                () -> assertTrue(res.get(2).getAmount()>=500)
-        );
-    }
-
-    @Test
-    void countAccountsLessThenAmount() {
-        int res = accountService.countAccountsLessThenAmount(501);
-        assertEquals(res, 5);
     }
 }
