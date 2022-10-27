@@ -6,10 +6,12 @@ import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -17,7 +19,8 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 abstract class UserAndAccountBaseApplicationTests {
 
 	@Autowired
@@ -25,8 +28,8 @@ abstract class UserAndAccountBaseApplicationTests {
 	@Autowired
 	AccountRepository accountRepository;
 
-	@BeforeAll
-	void beforeAll() {
+	@BeforeEach
+	void setup() {
 		Client entity = generateClient();
 		clientRepository.save(entity);
 		// TODO: 04.09.2022 batch insert in DB

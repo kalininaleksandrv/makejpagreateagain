@@ -5,7 +5,6 @@ import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +22,18 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     AccountServiceImpl accountService;
 
     @Test
-    @Order(1)
     void findAll() {
         Iterable<Account> savedAccount = accountService.findAll();
         assertEquals(10, savedAccount.spliterator().estimateSize());
     }
 
     @Test
-    @Order(2)
     void countAccountsByCurrency() {
         int res = accountService.countAccountsByCurrency(Currency.USD);
         assertEquals(5, res);
     }
 
     @Test
-    @Order(3)
     void findAllByAmountAndCurrency() {
         List<Account> res = accountService.findAllByAmountAndCurrency(500, Currency.EUR);
         assertAll(
@@ -49,14 +45,12 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     }
 
     @Test
-    @Order(4)
     void countAccountsLessThenAmount() {
         int res = accountService.countAccountsLessThenAmount(501);
         assertEquals(res, 5);
     }
 
     @Test
-    @Order(5)
     void findByAmountAndSort() {
         List<Account> res = accountService.findByCurrencyAndSort(Currency.EUR,
                 JpaSort.by(Sort.Direction.DESC, "amount"));
@@ -69,7 +63,6 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     }
 
     @Test
-    @Order(6)
     void saveAccountNewClient() {
         Account account = new Account();
         account.setAmount(100);
@@ -85,7 +78,6 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     }
 
     @Test
-    @Order(7)
     void saveAccountExistingClient() {
         Account account = new Account();
         account.setAmount(100);
@@ -99,7 +91,6 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     }
 
     @Test
-    @Order(8)
     void updateExistingAccountWithExistingClient(){
         Account savedAccount = accountService.findAll().iterator().next();
         savedAccount.setAmount(100_000);
@@ -111,7 +102,6 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     }
 
     @Test
-    @Order(9)
     void updateExistingAccountWithWrongClient(){
         Account account = accountService.findAll().iterator().next();
         Client client = new Client();
@@ -121,7 +111,6 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     }
 
     @Test
-    @Order(10)
     void updateExistingAccountWithNewClient(){
         Account account = accountService.findAll().iterator().next();
         Client client = new Client();
