@@ -4,9 +4,7 @@ import com.github.kalininaleksandrv.makejpagreateagain.exception.AccountProcessi
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
@@ -15,7 +13,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
 
     @Autowired
