@@ -23,6 +23,11 @@ abstract class UserAndAccountBaseApplicationTests {
 	@Autowired
 	AccountRepository accountRepository;
 
+	/*
+	we can also use TestEntityManager, runs inside TransactionTemplate lambda to fill DB and JDBC Template to clear tables
+	to @Autowired this classes use @AutoConfigureTestEntityManager which is a part of @DataJpaTest
+	when using @DataJpaTest do not forget switch off @Transaction behavior
+	 */
 	@BeforeEach
 	void setup() {
 		accountRepository.deleteAll();
