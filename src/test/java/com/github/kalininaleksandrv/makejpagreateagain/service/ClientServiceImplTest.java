@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,7 +42,9 @@ class ClientServiceImplTest extends UserAndAccountBaseApplicationTests {
     despite in a real call we fetch accounts without transactional (using named entity graph)
      */
     void saveClientWithId() {
-        Client client = clientRepository.findById(1).orElseThrow(() -> new RuntimeException(this.getClass().getSimpleName()));
+        Integer id = StreamSupport.stream(clientRepository.findAll().spliterator(), false)
+                .findFirst().orElseThrow().getId();
+        Client client = clientRepository.findById(id).orElseThrow(() -> new RuntimeException(this.getClass().getSimpleName()));
         clientRepository.save(client);
         client.setName("Peter");
         Client res = clientService.saveClient(client);
@@ -50,8 +53,10 @@ class ClientServiceImplTest extends UserAndAccountBaseApplicationTests {
 
     @Test
     void findClientById() {
-        Optional<Client> clientById = clientService.findClientById(1);
-        assertEquals(1, clientById.orElseThrow(() -> new RuntimeException(this.getClass().getSimpleName())).getId());
+        Integer id = StreamSupport.stream(clientRepository.findAll().spliterator(), false)
+                .findFirst().orElseThrow().getId();
+        Optional<Client> clientById = clientService.findClientById(id);
+        assertEquals(id, clientById.orElseThrow(() -> new RuntimeException(this.getClass().getSimpleName())).getId());
     }
 
     @Test
@@ -68,6 +73,5 @@ class ClientServiceImplTest extends UserAndAccountBaseApplicationTests {
         clientService.saveClientWithAge(client, 100);
         Client fetchedClient = clientRepository.findByName("Vasily");
         assertEquals(100, fetchedClient.getAge());
-
     }
 }

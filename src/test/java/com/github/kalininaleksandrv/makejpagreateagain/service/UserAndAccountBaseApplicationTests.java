@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 abstract class UserAndAccountBaseApplicationTests {
 
 	@Autowired
@@ -27,6 +25,8 @@ abstract class UserAndAccountBaseApplicationTests {
 
 	@BeforeEach
 	void setup() {
+		accountRepository.deleteAll();
+		clientRepository.deleteAll();
 		Client entity = generateClient();
 		clientRepository.save(entity);
 		// TODO: 04.09.2022 batch insert in DB
