@@ -18,6 +18,8 @@ import java.util.List;
 public class AccountController {
 
     // TODO: 07.09.2022 add @Transaction and pessimistic/optimistic lock
+    // TODO: 19.11.2022 add @Transaction(readonly = true)
+    // TODO: 19.11.2022 gets rid the OSIV problem
     private final AccountService accountService;
 
     @GetMapping(path = "accounts")

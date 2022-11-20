@@ -17,6 +17,17 @@ import java.util.List;
 public class Client {
 
     @Id
+    /*
+    GenerationType.SEQUENCE means that Hibernate or DB creates
+    special object to generate IDs
+    if DB NOT support SEQUENCE (MySQL) that we ends up
+    with GenerationType.TABLE with awful performance
+    GenerationType.IDENTITY means we use special column fo IDs
+    a lot of DBs support this ability (Oracle only emulates this)
+
+    GenerationType.SEQUENCE supports batching on JDBC,
+    and GenerationType.IDENTITY - not
+    */
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id_client")
     @EqualsAndHashCode.Exclude

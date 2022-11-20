@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 abstract class UserAndAccountBaseApplicationTests {
 
 	@Autowired
@@ -34,7 +36,6 @@ abstract class UserAndAccountBaseApplicationTests {
 		clientRepository.deleteAll();
 		Client entity = generateClient();
 		clientRepository.save(entity);
-		// TODO: 04.09.2022 batch insert in DB
 		accountRepository.saveAll(addAccountsToClient(entity));
 	}
 
