@@ -4,12 +4,19 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+    # avoids hikari to check autocomit flag and for this
+    # hold connection on a @Transactional when it's njt necessary
+    hikari:
+      auto-commit: false
   jpa:
     hibernate:
       ddl-auto: create
       dialect: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
+        # inform hibernate that we're switch off auto-commit
+        connection:
+          provider_disables_autocommit: true
         format_sql: true
         use_sql_comments: true
         generate_statistics: true
