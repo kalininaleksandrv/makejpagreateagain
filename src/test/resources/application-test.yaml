@@ -4,7 +4,7 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-    # avoids hikari to check autocomit flag and for this
+    # avoids hikari to check autocommit flag and for this
     # hold connection on a @Transactional when it's njt necessary
     hikari:
       auto-commit: false
