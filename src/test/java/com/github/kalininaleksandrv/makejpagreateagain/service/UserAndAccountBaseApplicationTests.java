@@ -43,16 +43,20 @@ abstract class UserAndAccountBaseApplicationTests {
 
 		List<Account> accounts = new ArrayList<>();
 		for (int i = 1; i<11; i++){
-			Account account = new Account();
-			account.setAmount(i*100);
-			if(i%2!=0){
-				account.setCurrency(Currency.EUR);
-			} else {
-				account.setCurrency(Currency.USD);
-			}
-			account.setClient(entity);
-			accounts.add(account);
-		}
+            Account account = new Account();
+            account.setAmount(i * 100);
+            if (i % 2 != 0) {
+                account.setCurrency(Currency.EUR);
+            } else {
+                account.setCurrency(Currency.USD);
+            }
+            if (i % 3 == 0) {
+                account.setBlocked(true);
+                account.setBlockingReason("fraud");
+            }
+            account.setClient(entity);
+            accounts.add(account);
+        }
 		return accounts;
 	}
 

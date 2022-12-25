@@ -3,7 +3,6 @@ package com.github.kalininaleksandrv.makejpagreateagain.repo;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
@@ -15,4 +14,16 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Override
     List<Account> findAll();
 
+    /*
+    simple method to work with projection - List<AccountView> not very convenient because of typification,
+    so we turn it to List<T> and add Class<T> parameter
+     */
+    <T> List<T> findByBlockedTrue(Class<T> type);
+
+    /*
+    we needs overloading here to one method works with entity graph and second - does not
+     */
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
+            value = Account.ACCOUNT_CLIENT_ENTITY_GRAPH)
+    <T> List<T> findByBlockedTrue();
 }

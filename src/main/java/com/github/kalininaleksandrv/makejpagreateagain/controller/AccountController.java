@@ -1,6 +1,8 @@
 package com.github.kalininaleksandrv.makejpagreateagain.controller;
 
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
+import com.github.kalininaleksandrv.makejpagreateagain.model.projection.AccountView;
+import com.github.kalininaleksandrv.makejpagreateagain.model.projection.BlockingAccountProjectionDTO;
 import com.github.kalininaleksandrv.makejpagreateagain.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,27 @@ public class AccountController {
         List<Account> accounts = new ArrayList<>();
         accountService.findAll().forEach(accounts::add);
         return new ResponseEntity<>(accounts, HttpStatus.OK);
+    }
+
+    /*
+    since we're generify accountService.findBlocking method to work with projection, we must generify controller too
+    param useCriteriaApi used only for demonstration property - it switches method of service to use
+     */
+
+    @GetMapping(path = "accounts/blocked")
+    public ResponseEntity<Iterable<?>> blocked(@RequestParam boolean shortView,
+                                               @RequestParam(required = false) boolean useCriteriaApi) {
+        if (useCriteriaApi) {
+            if (shortView) {
+                return new ResponseEntity<>(accountService
+                        .findBlockingCriteriaApproach(BlockingAccountProjectionDTO.class), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(accountService.findBlockingCriteriaApproach(Account.class), HttpStatus.OK);
+        }
+        if (shortView) {
+            return new ResponseEntity<>(accountService.findBlocking(AccountView.class), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(accountService.findBlocking(Account.class), HttpStatus.OK);
     }
 
     @PostMapping(path = "account")

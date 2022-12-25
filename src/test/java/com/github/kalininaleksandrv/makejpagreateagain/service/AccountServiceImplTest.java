@@ -4,6 +4,8 @@ import com.github.kalininaleksandrv.makejpagreateagain.exception.AccountProcessi
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
+import com.github.kalininaleksandrv.makejpagreateagain.model.projection.AccountView;
+import com.github.kalininaleksandrv.makejpagreateagain.model.projection.BlockingAccountProjectionDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -108,11 +110,52 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     }
 
     @Test
-    void updateExistingAccountWithNewClient(){
+    void updateExistingAccountWithNewClient() {
         Account account = accountService.findAll().iterator().next();
         Client client = new Client();
         client.setId(null);
         account.setClient(client);
         assertThrows(AccountProcessingException.class, () -> accountService.saveAccount(account));
+    }
+
+    /*
+    since findByBlockedTrue() is generify we can fetch both - Account and AccountView from the same repo
+     */
+    @Test
+    void findBlocking() {
+        List<AccountView> accountProjections = accountService.findBlocking(AccountView.class);
+        assertAll(
+                () -> assertEquals(3, accountProjections.size()),
+                () -> assertEquals("fraud", accountProjections.get(0).getBlockingReason()),
+                () -> assertEquals("fraud", accountProjections.get(1).getBlockingReason()),
+                () -> assertEquals("fraud", accountProjections.get(2).getBlockingReason())
+        );
+
+        List<Account> accounts = accountService.findBlocking(Account.class);
+        assertAll(
+                () -> assertEquals(3, accounts.size()),
+                () -> assertEquals("fraud", accounts.get(0).getBlockingReason()),
+                () -> assertEquals(300, accounts.get(0).getAmount())
+        );
+    }
+
+    @Test
+    void findBlockingCriteriaApproach() {
+        List<BlockingAccountProjectionDTO> accountProjections = accountService
+                .findBlockingCriteriaApproach(BlockingAccountProjectionDTO.class);
+
+        assertAll(
+                () -> assertEquals(3, accountProjections.size()),
+                () -> assertEquals("fraud", accountProjections.get(0).getBlockingReason()),
+                () -> assertEquals("fraud", accountProjections.get(1).getBlockingReason()),
+                () -> assertEquals("fraud", accountProjections.get(2).getBlockingReason())
+        );
+
+        List<Account> accounts = accountService.findBlockingCriteriaApproach(Account.class);
+        assertAll(
+                () -> assertEquals(3, accounts.size()),
+                () -> assertEquals("fraud", accounts.get(0).getBlockingReason()),
+                () -> assertEquals(300, accounts.get(0).getAmount())
+        );
     }
 }

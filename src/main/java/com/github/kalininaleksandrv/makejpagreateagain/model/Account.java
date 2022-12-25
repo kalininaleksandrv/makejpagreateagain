@@ -24,7 +24,8 @@ public class Account {
 
     private int amount; // TODO: 19.06.2022 to BigDecimal
     private Currency currency;
-
+    private boolean blocked;
+    private String blockingReason;
     // TODO: 26.06.2022 add business-key
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -19,4 +19,8 @@ public interface AccountService {
     List<Account> findAllByAmountAndCurrency(int amount, Currency currency);
 
     List<Account> findByCurrencyAndSort(Currency currency, Sort sort);
+
+    <T> List<T> findBlocking(Class<T> type);
+
+    <T> List<T> findBlockingCriteriaApproach(Class<T> type);
 }
