@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ abstract class UserAndAccountBaseApplicationTests {
 		List<Account> accounts = new ArrayList<>();
 		for (int i = 1; i<11; i++){
             Account account = new Account();
-            account.setAmount(i * 100);
+            account.setAmount(BigDecimal.valueOf(i * 100));
             if (i % 2 != 0) {
                 account.setCurrency(Currency.EUR);
             } else {

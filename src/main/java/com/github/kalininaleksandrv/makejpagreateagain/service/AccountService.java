@@ -4,6 +4,7 @@ import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
 import org.springframework.data.domain.Sort;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,9 +16,9 @@ public interface AccountService {
 
     int countAccountsByCurrency(Currency currency);
 
-    int countAccountsLessThenAmount(int amount);
+    int countAccountsLessThenAmount(BigDecimal amount);
 
-    List<Account> findAllByAmountAndCurrency(int amount, Currency currency);
+    List<Account> findAllByAmountAndCurrency(BigDecimal amount, Currency currency);
 
     List<Account> findByCurrencyAndSort(Currency currency, Sort sort);
 
@@ -26,4 +27,6 @@ public interface AccountService {
     <T> List<T> findBlockingCriteriaApproach(Class<T> type);
 
     Optional<Account> findById(Integer id);
+
+    Account updateBalance(Integer fromAccountId, Integer toAccountId, BigDecimal changingValue);
 }

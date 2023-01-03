@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,18 +47,18 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
 
     @Test
     void findAllByAmountAndCurrency() {
-        List<Account> res = accountService.findAllByAmountAndCurrency(500, Currency.EUR);
+        List<Account> res = accountService.findAllByAmountAndCurrency(BigDecimal.valueOf(500), Currency.EUR);
         assertAll(
                 () -> assertEquals(3, res.size()),
-                () -> assertTrue(res.get(0).getAmount()>=500),
-                () -> assertTrue(res.get(1).getAmount()>=500),
-                () -> assertTrue(res.get(2).getAmount()>=500)
+                () -> assertTrue(res.get(0).getAmount().intValue()>=500),
+                () -> assertTrue(res.get(1).getAmount().intValue()>=500),
+                () -> assertTrue(res.get(2).getAmount().intValue()>=500)
         );
     }
 
     @Test
     void countAccountsLessThenAmount() {
-        int res = accountService.countAccountsLessThenAmount(501);
+        int res = accountService.countAccountsLessThenAmount(BigDecimal.valueOf(501));
         assertEquals(res, 5);
     }
 
@@ -67,16 +68,16 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
                 JpaSort.by(Sort.Direction.DESC, "amount"));
         assertAll(
                 () -> assertEquals(5, res.size()),
-                () -> assertTrue(res.get(0).getAmount()>=900),
-                () -> assertTrue(res.get(1).getAmount()>=700),
-                () -> assertTrue(res.get(2).getAmount()>=500)
+                () -> assertTrue(res.get(0).getAmount().intValue()>=900),
+                () -> assertTrue(res.get(1).getAmount().intValue()>=700),
+                () -> assertTrue(res.get(2).getAmount().intValue()>=500)
         );
     }
 
     @Test
     void saveAccountNewClient() {
         Account account = new Account();
-        account.setAmount(100);
+        account.setAmount(BigDecimal.valueOf(100));
         account.setCurrency(Currency.USD);
         Client client = new Client();
         client.setAge(20);
@@ -84,30 +85,30 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
         account.setClient(client);
         Account res = accountService.saveAccount(account);
         Client res_c = clientRepository.findByName("Vasily");
-        assertEquals(100, res.getAmount());
+        assertEquals(100, res.getAmount().intValue());
         assertNotNull(res_c.getId());
     }
 
     @Test
     void saveAccountExistingClient() {
         Account account = new Account();
-        account.setAmount(100);
+        account.setAmount(BigDecimal.valueOf(100));
         account.setCurrency(Currency.USD);
         Client savedClient = clientRepository.findByName("First Client");
         savedClient.setName("name which must be ignored");
         account.setClient(savedClient);
         Account res = accountService.saveAccount(account);
-        assertEquals(100, res.getAmount());
+        assertEquals(100, res.getAmount().intValue());
         assertEquals("First Client", res.getClient().getName());
     }
 
     @Test
     void updateExistingAccountWithExistingClient(){
         Account savedAccount = accountService.findAll().iterator().next();
-        savedAccount.setAmount(100_000);
+        savedAccount.setAmount(BigDecimal.valueOf(100000));
         savedAccount.getClient().setName("name which must be ignored");
         Account updatedAccount = accountService.saveAccount(savedAccount);
-        assertEquals(100000, updatedAccount.getAmount());
+        assertEquals(100000, updatedAccount.getAmount().intValue());
         assertEquals(savedAccount.getId(), updatedAccount.getId());
         assertEquals(savedAccount.getClient().getId(), clientRepository.findAll().iterator().next().getId());
     }
@@ -147,7 +148,7 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
         assertAll(
                 () -> assertEquals(3, accounts.size()),
                 () -> assertEquals("fraud", accounts.get(0).getBlockingReason()),
-                () -> assertEquals(300, accounts.get(0).getAmount())
+                () -> assertEquals(300, accounts.get(0).getAmount().intValue())
         );
     }
 
@@ -167,7 +168,7 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
         assertAll(
                 () -> assertEquals(3, accounts.size()),
                 () -> assertEquals("fraud", accounts.get(0).getBlockingReason()),
-                () -> assertEquals(300, accounts.get(0).getAmount())
+                () -> assertEquals(300, accounts.get(0).getAmount().intValue())
         );
     }
 }

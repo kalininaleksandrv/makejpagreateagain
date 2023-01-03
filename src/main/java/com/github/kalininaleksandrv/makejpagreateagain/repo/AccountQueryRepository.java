@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AccountQueryRepository extends JpaRepository<Account, Long> {
@@ -23,13 +24,13 @@ public interface AccountQueryRepository extends JpaRepository<Account, Long> {
     we use @Param for not depend on order of parameters in query
      */
     @Query("select a from Account a where a.currency = :currency and a.amount >= :amount")
-    List<Account> findByAmountAndCurrency(@Param("amount") int amount, @Param("currency") Currency currency);
+    List<Account> findByAmountAndCurrency(@Param("amount") BigDecimal amount, @Param("currency") Currency currency);
 
     /*
     native sql query
      */
     @Query(value = "SELECT COUNT(*) FROM ACCOUNT WHERE AMOUNT < ?1", nativeQuery = true)
-    int findNumberOfAccountsLessThenAmount(int amount);
+    int findNumberOfAccountsLessThenAmount(BigDecimal amount);
 
     /*
     JPQL query

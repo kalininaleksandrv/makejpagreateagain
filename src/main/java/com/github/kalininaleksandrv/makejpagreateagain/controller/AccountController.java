@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -64,4 +65,12 @@ public class AccountController {
     public ResponseEntity<Account> account(@RequestBody Account account) {
         return new ResponseEntity<>(accountService.saveAccount(account), HttpStatus.OK);
     }
+
+    @PostMapping(path =  "account/{id}/balance")
+    public ResponseEntity<Account> accountBalance(@PathVariable Integer toAccountId,
+                                                  @RequestParam(required = false) Integer fromAccountId,
+                                                  @RequestParam BigDecimal changingValue){
+        return new ResponseEntity<>(accountService.updateBalance(fromAccountId, toAccountId, changingValue), HttpStatus.OK);
+    }
+
 }

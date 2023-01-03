@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @NamedEntityGraph(name = Account.ACCOUNT_CLIENT_ENTITY_GRAPH,
         attributeNodes = {@NamedAttributeNode(value = "client")})
@@ -22,7 +23,8 @@ public class Account {
     @EqualsAndHashCode.Exclude
     private Integer id;
 
-    private int amount; // TODO: 19.06.2022 to BigDecimal
+    @Column(nullable= false, precision=12, scale=2)
+    private BigDecimal amount;
     private Currency currency; // TODO: 03.01.2023 use ENUM annotation
     private boolean blocked;
     private String blockingReason;

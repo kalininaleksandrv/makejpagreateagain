@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,7 @@ class ClientServiceImplTest extends UserAndAccountBaseApplicationTests {
     @Test
     void saveClient() {
         Account account = new Account();
-        account.setAmount(100);
+        account.setAmount(BigDecimal.valueOf(100));
         account.setCurrency(Currency.USD);
         Client client = new Client();
         client.setAge(20);
@@ -62,7 +63,7 @@ class ClientServiceImplTest extends UserAndAccountBaseApplicationTests {
     @Test
     void saveClientWithAge() {
         Account account = new Account();
-        account.setAmount(100);
+        account.setAmount(BigDecimal.valueOf(100));
         account.setCurrency(Currency.USD);
         Client client = new Client();
         client.setAge(20);

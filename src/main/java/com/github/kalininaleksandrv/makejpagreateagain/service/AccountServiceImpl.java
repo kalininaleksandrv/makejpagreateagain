@@ -19,6 +19,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -89,12 +90,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public int countAccountsLessThenAmount(int amount) {
+    public int countAccountsLessThenAmount(BigDecimal amount) {
         return accountQueryRepository.findNumberOfAccountsLessThenAmount(amount);
     }
 
     @Override
-    public List<Account> findAllByAmountAndCurrency(int amount, Currency currency) {
+    public List<Account> findAllByAmountAndCurrency(BigDecimal amount, Currency currency) {
         return accountQueryRepository.findByAmountAndCurrency(amount, currency);
     }
 
@@ -151,5 +152,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Optional<Account> findById(Integer id) {
         return accountRepository.findById(id);
+    }
+
+    @Override
+    public Account updateBalance(Integer fromAccountId, Integer toAccountId, BigDecimal changingValue) {
+        return null;
     }
 }
