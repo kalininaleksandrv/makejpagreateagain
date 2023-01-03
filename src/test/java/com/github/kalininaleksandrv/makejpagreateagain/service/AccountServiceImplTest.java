@@ -15,6 +15,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -170,5 +172,41 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
                 () -> assertEquals("fraud", accounts.get(0).getBlockingReason()),
                 () -> assertEquals(300, accounts.get(0).getAmount().intValue())
         );
+    }
+
+    @Test
+    void updateBalanceNotEnoughMoney() {
+        List<Account> savedAccount = StreamSupport.stream(accountService.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+        if (savedAccount.size() < 2) {
+            throw new RuntimeException("unable to test - number of accounts less then two");
+        }
+        Account from = savedAccount.get(0);
+        Account to = savedAccount.get(1);
+        AccountProcessingException ex = assertThrows(AccountProcessingException.class, () -> accountService
+                .updateBalance(from.getId(), to.getId(), from.getAmount().add(new BigDecimal("0.01"))));
+        assertEquals("not enough money on source account", ex.getMessage());
+    }
+
+    @Test
+    void updateBalanceSuccess() {
+        List<Account> savedAccount = StreamSupport.stream(accountService.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+        if (savedAccount.size() < 2) {
+            throw new RuntimeException(this.getClass().getSimpleName() +
+                    "unable to test - number of accounts less then two");
+        }
+        Account from = savedAccount.get(0);
+        Account to = savedAccount.get(1);
+        double oldValue = to.getAmount().doubleValue();
+        accountService.updateBalance(from.getId(), to.getId(), from.getAmount());
+        Account fromAfterOperation = accountRepository.findById(from.getId())
+                .orElseThrow(() -> new RuntimeException(this.getClass().getSimpleName() +
+                        "source account not found after operation"));
+        Account toAfterOperation = accountRepository.findById(to.getId())
+                .orElseThrow(() -> new RuntimeException(this.getClass().getSimpleName() +
+                        "target account not found after operation"));
+        assertEquals(0, fromAfterOperation.getAmount().doubleValue());
+        assertEquals(oldValue + from.getAmount().longValue(), toAfterOperation.getAmount().doubleValue());
     }
 }

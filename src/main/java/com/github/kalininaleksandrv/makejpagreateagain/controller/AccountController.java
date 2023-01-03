@@ -66,10 +66,11 @@ public class AccountController {
         return new ResponseEntity<>(accountService.saveAccount(account), HttpStatus.OK);
     }
 
-    @PostMapping(path =  "account/{id}/balance")
-    public ResponseEntity<Account> accountBalance(@PathVariable Integer toAccountId,
-                                                  @RequestParam(required = false) Integer fromAccountId,
-                                                  @RequestParam BigDecimal changingValue){
+    @PatchMapping(path = "account/{id}/balance")
+    public ResponseEntity<Account> accountBalance(@PathVariable(value = "id") int toAccountId,
+                                                  @RequestParam Integer fromAccountId,
+                                                  @RequestParam BigDecimal changingValue) {
+        log.info("start updating account {}", toAccountId);
         return new ResponseEntity<>(accountService.updateBalance(fromAccountId, toAccountId, changingValue), HttpStatus.OK);
     }
 
