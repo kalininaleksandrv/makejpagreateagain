@@ -147,4 +147,9 @@ public class AccountServiceImpl implements AccountService {
         }
         return query.getResultList();
     }
+
+    @Override
+    public Optional<Account> findById(Integer id) {
+        return accountRepository.findById(id);
+    }
 }

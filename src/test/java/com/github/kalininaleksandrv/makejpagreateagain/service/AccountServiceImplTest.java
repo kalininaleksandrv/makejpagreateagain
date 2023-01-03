@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -157,5 +158,14 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
                 () -> assertEquals("fraud", accounts.get(0).getBlockingReason()),
                 () -> assertEquals(300, accounts.get(0).getAmount())
         );
+    }
+
+    @Test
+    void findById() {
+        Optional<Account> byId = accountService.findById(1);
+        assertTrue(byId.isPresent());
+        assertEquals(1, byId.get().getId());
+        assertEquals(1, byId.get().getClient().getId());
+
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -50,6 +51,13 @@ public class AccountController {
             return new ResponseEntity<>(accountService.findBlocking(AccountView.class), HttpStatus.OK);
         }
         return new ResponseEntity<>(accountService.findBlocking(Account.class), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "account")
+    public ResponseEntity<Account> account(@PathVariable Integer id) {
+        Optional<Account> accountOpt = accountService.findById(id);
+        return accountOpt.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NO_CONTENT));
     }
 
     @PostMapping(path = "account")
