@@ -3,6 +3,7 @@ package com.github.kalininaleksandrv.makejpagreateagain.controller;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
 import com.github.kalininaleksandrv.makejpagreateagain.service.ClientService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +13,14 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v1/")
+@Slf4j
 public class ClientController {
 
     private final ClientService clientService;
 
     @GetMapping(path = "client/{id}")
-    public ResponseEntity<Client> clientById(@PathVariable Integer id) {
+    public ResponseEntity<Client> clientById(@PathVariable Integer id) throws InterruptedException {
+        log.info("### requested client with id {}", id);
         var foundedClient = clientService.findClientById(id);
         return foundedClient.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NO_CONTENT));

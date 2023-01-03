@@ -17,13 +17,13 @@ public class Account {
 
     public static final String ACCOUNT_CLIENT_ENTITY_GRAPH = "account-client-entity-graph";
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="account_id_seq")
     @Column(name = "id_account")
     @EqualsAndHashCode.Exclude
     private Integer id;
 
     private int amount; // TODO: 19.06.2022 to BigDecimal
-    private Currency currency;
+    private Currency currency; // TODO: 03.01.2023 use ENUM annotation
     private boolean blocked;
     private String blockingReason;
     // TODO: 26.06.2022 add business-key
