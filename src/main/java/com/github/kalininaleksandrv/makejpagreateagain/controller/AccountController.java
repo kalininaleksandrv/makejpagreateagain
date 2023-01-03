@@ -53,7 +53,7 @@ public class AccountController {
         return new ResponseEntity<>(accountService.findBlocking(Account.class), HttpStatus.OK);
     }
 
-    @GetMapping(path = "account")
+    @GetMapping(path = "account/{id}")
     public ResponseEntity<Account> account(@PathVariable Integer id) {
         Optional<Account> accountOpt = accountService.findById(id);
         return accountOpt.map(value -> new ResponseEntity<>(value, HttpStatus.OK))

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,16 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     void findAll() {
         Iterable<Account> savedAccount = accountService.findAll();
         assertEquals(10, savedAccount.spliterator().estimateSize());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+        //clear context to delete old sequences
+    void findById() {
+        Optional<Account> byId = accountService.findById(1);
+        assertTrue(byId.isPresent());
+        assertEquals(1, byId.get().getId());
+        assertEquals(1, byId.get().getClient().getId());
     }
 
     @Test
@@ -118,10 +129,10 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
         account.setClient(client);
         assertThrows(AccountProcessingException.class, () -> accountService.saveAccount(account));
     }
-
     /*
     since findByBlockedTrue() is generify we can fetch both - Account and AccountView from the same repo
      */
+
     @Test
     void findBlocking() {
         List<AccountView> accountProjections = accountService.findBlocking(AccountView.class);
@@ -158,14 +169,5 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
                 () -> assertEquals("fraud", accounts.get(0).getBlockingReason()),
                 () -> assertEquals(300, accounts.get(0).getAmount())
         );
-    }
-
-    @Test
-    void findById() {
-        Optional<Account> byId = accountService.findById(1);
-        assertTrue(byId.isPresent());
-        assertEquals(1, byId.get().getId());
-        assertEquals(1, byId.get().getClient().getId());
-
     }
 }

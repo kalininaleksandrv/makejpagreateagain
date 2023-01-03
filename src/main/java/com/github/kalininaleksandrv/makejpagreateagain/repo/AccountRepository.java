@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 
@@ -14,14 +15,19 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Override
     List<Account> findAll();
 
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
+            value = Account.ACCOUNT_CLIENT_ENTITY_GRAPH)
+    @Override
+    Optional<Account> findById(Integer integer);
+
     /*
-    simple method to work with projection - List<AccountView> not very convenient because of typification,
-    so we turn it to List<T> and add Class<T> parameter
-     */
+        simple method to work with projection - List<AccountView> not very convenient because of typification,
+        so we turn it to List<T> and add Class<T> parameter
+         */
     <T> List<T> findByBlockedTrue(Class<T> type);
 
     /*
-    we needs overloading here to one method works with entity graph and second - does not
+    we need overloading here to one method works with entity graph and second - does not
      */
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
             value = Account.ACCOUNT_CLIENT_ENTITY_GRAPH)
