@@ -159,14 +159,14 @@ public class AccountServiceImpl implements AccountService {
 
         Optional<Account> to = accountRepository.findById(toAccountId);
         Account from = accountRepository
-                .findById(fromAccountId).orElseThrow(() -> new AccountProcessingException("no such account available"));
+                .findById(fromAccountId).orElseThrow(() -> new AccountProcessingException("no such account available: " + fromAccountId));
         //for the brevity sake check for blocking status is omitted
         // TODO: 03.01.2023 currency conversion
         if (from.getAmount().compareTo(changingValue) < 0) {
             throw new AccountProcessingException("not enough money on source account");
         }
         from.setAmount(from.getAmount().subtract(changingValue));
-        to.orElseThrow(() -> new AccountProcessingException("no such account available")).setAmount(to.get().getAmount().add(changingValue));
+        to.orElseThrow(() -> new AccountProcessingException("no such account available: " + toAccountId)).setAmount(to.get().getAmount().add(changingValue));
         accountRepository.save(from);
         return accountRepository.save(to.get());
     }
