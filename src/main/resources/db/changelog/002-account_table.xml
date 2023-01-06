@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
-    <changeSet id="02-01" author="aleksandr.kalinin">
+    <changeSet id="02-01" author="aleksandr.kalinin" runAlways="true">
         <preConditions onFail="MARK_RAN">
             <tableExists schemaName="public" tableName="account"/>
         </preConditions>
@@ -12,21 +12,21 @@
                    schemaName="public"
                    tableName="account"/>
     </changeSet>
-    <changeSet id="02-02" author="aleksandr.kalinin">
+    <changeSet id="02-02" author="aleksandr.kalinin" runAlways="true">
         <preConditions onFail="MARK_RAN">
             <sequenceExists schemaName="public" sequenceName="account_id_seq"/>
         </preConditions>
         <dropSequence sequenceName="account_id_seq"
                       schemaName="public"/>
     </changeSet>
-    <changeSet id="02-03" author="aleksandr.kalinin">
+    <changeSet id="02-03" author="aleksandr.kalinin" runAlways="true">
         <createSequence dataType="int"
                         incrementBy="1"
                         schemaName="public"
                         sequenceName="account_id_seq"
                         startValue="1"/>
     </changeSet>
-    <changeSet id="02-04" author="aleksandr.kalinin">
+    <changeSet id="02-04" author="aleksandr.kalinin" runAlways="true">
         <createTable tableName="account" schemaName="public">
             <column name="id_account" type="int4">
                 <constraints primaryKey="true"/>
