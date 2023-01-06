@@ -17,6 +17,8 @@ spring:
   h2:
     console:
       enabled: true
+  liquibase:
+    enabled: false
 logging:
   level:
     org.springframework.orm.jpa:

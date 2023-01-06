@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+    <changeSet id="02-01" author="aleksandr.kalinin">
+        <preConditions onFail="MARK_RAN">
+            <tableExists schemaName="public" tableName="account"/>
+        </preConditions>
+        <dropTable cascadeConstraints="true"
+                   schemaName="public"
+                   tableName="account"/>
+    </changeSet>
+    <changeSet id="02-02" author="aleksandr.kalinin">
+        <preConditions onFail="MARK_RAN">
+            <sequenceExists schemaName="public" sequenceName="account_id_seq"/>
+        </preConditions>
+        <dropSequence sequenceName="account_id_seq"
+                      schemaName="public"/>
+    </changeSet>
+    <changeSet id="02-03" author="aleksandr.kalinin">
+        <createSequence dataType="int"
+                        incrementBy="1"
+                        schemaName="public"
+                        sequenceName="account_id_seq"
+                        startValue="1"/>
+    </changeSet>
+    <changeSet id="02-04" author="aleksandr.kalinin">
+        <createTable tableName="account" schemaName="public">
+            <column name="id_account" type="int4">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="blocked" type="boolean"/>
+            <column name="blocking_reason" type="varchar(256)"/>
+            <column name="amount" type="decimal"/>
+            <column name="currency" type="varchar"/>
+            <column name="id_client" type="int4"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="id_client"
+                                 baseTableName="account"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_account_id_client"
+                                 referencedColumnNames="id_client"
+                                 referencedTableSchemaName="public"
+                                 referencedTableName="client"/>
+    </changeSet>
+</databaseChangeLog>

@@ -28,7 +28,8 @@ public class Client {
     GenerationType.SEQUENCE supports batching on JDBC,
     and GenerationType.IDENTITY - not
     */
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="client_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_seq_gen")
+    @SequenceGenerator(allocationSize = 1, name="client_seq_gen", sequenceName="client_id_seq")
     @Column(name = "id_client")
     @EqualsAndHashCode.Exclude
     private Integer id;

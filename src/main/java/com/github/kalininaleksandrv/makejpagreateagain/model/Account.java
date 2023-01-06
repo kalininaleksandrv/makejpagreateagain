@@ -18,7 +18,8 @@ public class Account {
 
     public static final String ACCOUNT_CLIENT_ENTITY_GRAPH = "account-client-entity-graph";
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="account_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_seq_gen")
+    @SequenceGenerator(allocationSize = 1, name="account_seq_gen", sequenceName="account_id_seq")
     @Column(name = "id_account")
     @EqualsAndHashCode.Exclude
     private Integer id;

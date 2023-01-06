@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
       dialect: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
@@ -14,9 +14,9 @@ spring:
         use_sql_comments: true
         generate_statistics: true
         session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 3
-  h2:
-    console:
-      enabled: true
+  liquibase:
+    enabled: true
+    change-log: classpath:db/master.xml
 logging:
   level:
     org.springframework.orm.jpa:
@@ -26,3 +26,4 @@ logging:
       stat: DEBUG
       cache: DEBUG
       type.descriptor.sql.BasicBinder: TRACE
+    liquibase: INFO

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+    <changeSet id="01-01" author="aleksandr.kalinin">
+        <preConditions onFail="MARK_RAN">
+            <tableExists schemaName="public" tableName="client"/>
+        </preConditions>
+        <dropTable cascadeConstraints="true"
+                   schemaName="public"
+                   tableName="client"/>
+    </changeSet>
+    <changeSet id="01-02" author="aleksandr.kalinin">
+        <preConditions onFail="MARK_RAN">
+            <sequenceExists schemaName="public" sequenceName="client_id_seq"/>
+        </preConditions>
+        <dropSequence sequenceName="client_id_seq"
+                   schemaName="public"/>
+    </changeSet>
+    <changeSet id="01-03" author="aleksandr.kalinin">
+        <createSequence dataType="int"
+                        incrementBy="1"
+                        schemaName="public"
+                        sequenceName="client_id_seq"
+                        startValue="1"/>
+    </changeSet>
+    <changeSet id="01-04" author="aleksandr.kalinin">
+        <createTable tableName="client" schemaName="public">
+            <column name="id_client" type="int4">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(32)"/>
+            <column name="age" type="int4"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
