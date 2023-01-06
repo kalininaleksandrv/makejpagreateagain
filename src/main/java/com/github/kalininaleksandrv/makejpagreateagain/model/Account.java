@@ -26,7 +26,9 @@ public class Account {
 
     @Column(nullable= false, precision=12, scale=2)
     private BigDecimal amount;
-    private Currency currency; // TODO: 03.01.2023 use ENUM annotation
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
     private boolean blocked;
     private String blockingReason;
     // TODO: 26.06.2022 add business-key
