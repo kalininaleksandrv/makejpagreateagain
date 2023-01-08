@@ -54,6 +54,8 @@ public class AccountServiceImpl implements AccountService {
         // TODO: 04.09.2022 it must be impossible to add new client without ID on existing account
         if(account.getClient() == null) throw new AccountProcessingException("account must contain client info");
         if(account.getClient().getId() != null){
+            // TODO: 08.01.2023 it must be imposible to update existing account with another existing client
+            //  e.g. change client of account
             Optional<Client> clientFromDb = clientRepository.findById(account.getClient().getId());
             /*
             if the Client object from request contains changes, they will not be saved,

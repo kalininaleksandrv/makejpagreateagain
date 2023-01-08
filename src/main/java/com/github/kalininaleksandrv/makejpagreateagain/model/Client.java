@@ -1,6 +1,7 @@
 package com.github.kalininaleksandrv.makejpagreateagain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class Client {
     @SequenceGenerator(allocationSize = 1, name="client_seq_gen", sequenceName="client_id_seq")
     @Column(name = "id_client")
     @EqualsAndHashCode.Exclude
+    @Setter(AccessLevel.NONE)
     private Integer id;
 
     private String name;

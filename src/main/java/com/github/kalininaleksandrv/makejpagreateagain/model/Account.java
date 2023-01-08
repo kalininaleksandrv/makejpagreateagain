@@ -1,6 +1,7 @@
 package com.github.kalininaleksandrv.makejpagreateagain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class Account {
     @SequenceGenerator(allocationSize = 1, name="account_seq_gen", sequenceName="account_id_seq")
     @Column(name = "id_account")
     @EqualsAndHashCode.Exclude
+    @Setter(AccessLevel.NONE)
     private Integer id;
 
     @Column(nullable= false, precision=12, scale=2)

@@ -117,9 +117,10 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
 
     @Test
     void updateExistingAccountWithWrongClient(){
+        // TODO: 08.01.2023 this test must be pushed up to intergation level
+        //  since is impossible now to create new client and assign nwe id to it
         Account account = accountService.findAll().iterator().next();
         Client client = new Client();
-        client.setId(100);
         account.setClient(client);
         assertThrows(AccountProcessingException.class, () -> accountService.saveAccount(account));
     }
@@ -128,7 +129,6 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
     void updateExistingAccountWithNewClient() {
         Account account = accountService.findAll().iterator().next();
         Client client = new Client();
-        client.setId(null);
         account.setClient(client);
         assertThrows(AccountProcessingException.class, () -> accountService.saveAccount(account));
     }
