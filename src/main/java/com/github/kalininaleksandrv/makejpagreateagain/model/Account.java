@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 public class Account {
 
+    // TODO: 08.01.2023 add single and composite unique constrains
+
     public static final String ACCOUNT_CLIENT_ENTITY_GRAPH = "account-client-entity-graph";
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_seq_gen")

@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ClientServiceImplTest extends UserAndAccountBaseApplicationTests {
 
@@ -74,5 +73,23 @@ class ClientServiceImplTest extends UserAndAccountBaseApplicationTests {
         clientService.saveClientWithAge(client, 100);
         Client fetchedClient = clientRepository.findByName("Vasily");
         assertEquals(100, fetchedClient.getAge());
+    }
+
+    @Test
+    void getAllWithAmtMoreThen() {
+        //create additional client with account amount more than 10 000
+        Account account = new Account();
+        account.setAmount(BigDecimal.valueOf(10001));
+        account.setCurrency(Currency.USD);
+        Client client = new Client();
+        client.setAge(20);
+        client.setName("Vasily");
+        List<Account> accounts = new ArrayList<>();
+        accounts.add(account);
+        client.setAccounts(accounts);
+        clientService.saveClient(client);
+        List<Client> allWithAmtMoreThen = clientService.getAllWithAmtMoreThen(BigDecimal.valueOf(10000));
+        assertEquals(1, allWithAmtMoreThen.size());
+        assertEquals("Vasily", allWithAmtMoreThen.get(0).getName());
     }
 }

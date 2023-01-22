@@ -2,12 +2,14 @@ package com.github.kalininaleksandrv.makejpagreateagain.service;
 
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
-import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountRepository;
+import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientQueryRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
+    private final ClientQueryRepository clientQueryRepository;
 
     @Override
     public Client saveClient(Client client) {
@@ -41,6 +44,7 @@ public class ClientServiceImpl implements ClientService {
         for (Account a: client.getAccounts()) {
             a.setClient(client);
         }
+        // this line can be omitted if @Transactional
         Client savedClient = clientRepository.save(client);
         /*
         since there is @Transactional annotation above method, data of client will be
@@ -49,6 +53,11 @@ public class ClientServiceImpl implements ClientService {
          */
         savedClient.setAge(age);
         return savedClient;
+    }
+
+    @Override
+    public List<Client> getAllWithAmtMoreThen(BigDecimal amount) {
+        return clientQueryRepository.getAllWithAmountMoreThen(amount);
     }
 
 }
