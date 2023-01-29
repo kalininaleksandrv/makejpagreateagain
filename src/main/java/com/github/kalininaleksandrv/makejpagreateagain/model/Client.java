@@ -38,6 +38,7 @@ public class Client {
 
     private String name;
     private int age;
+    private BillingAddress billingAddress;
 
     // TODO: 26.06.2022 add business-key
     // TODO: 05.08.2022 add custom getter and helper methods
