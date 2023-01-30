@@ -33,6 +33,9 @@
             </column>
             <column name="name" type="varchar(32)"/>
             <column name="age" type="int4"/>
+            <column name="city" type="varchar(32)"/>
+            <column name="country" type="varchar(32)"/>
+            <column name="zipcode" type="varchar(8)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
