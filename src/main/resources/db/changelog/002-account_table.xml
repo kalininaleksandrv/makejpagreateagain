@@ -36,6 +36,12 @@
             <column name="amount" type="decimal"/>
             <column name="currency" type="varchar"/>
             <column name="id_client" type="int4"/>
+            <column name="created" type="java.sql.Types.TIMESTAMP_WITH_TIMEZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated" type="JAVA.SQL.TYPES.TIMESTAMP_WITH_TIMEZONE">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="id_client"
                                  baseTableName="account"

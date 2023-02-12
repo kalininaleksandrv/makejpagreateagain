@@ -5,9 +5,12 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @NamedEntityGraph(name = Account.ACCOUNT_CLIENT_ENTITY_GRAPH,
         attributeNodes = {@NamedAttributeNode(value = "client")})
@@ -47,4 +50,12 @@ public class Account {
         this.client = client;
         client.addAccount(this);
     }
+
+    @CreationTimestamp
+    @Column(updatable = false, nullable = false)
+    private LocalDateTime created;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime updated;
 }

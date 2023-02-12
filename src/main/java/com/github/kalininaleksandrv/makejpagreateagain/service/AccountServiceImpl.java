@@ -55,33 +55,33 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account saveAccount(Account account) {
-        // TODO: 04.09.2022 it must be impossible to add new client without ID on existing account
-        if(account.getClient() == null) throw new AccountProcessingException("account must contain client info");
-        if(account.getClient().getId() != null){
-            // TODO: 08.01.2023 it must be imposible to update existing account with another existing client
-            //  e.g. change client of account
-            Optional<Client> clientFromDb = clientRepository.findById(account.getClient().getId());
-            /*
-            if the Client object from request contains changes, they will not be saved,
-            because object from db will replace it
-             */
-            account.setClient(clientFromDb.orElseThrow(() ->
-                    new AccountProcessingException("client, which has been referenced by account - not found")));
+
+        /*
+        1 new Client and new Account
+        2 existing Client and new Account
+        3 existing Client and Existing account
+        4 no such a case - new client and existing account
+         */
+        // TODO: 12.02.2023 it must be unable to move existing account to another client
+
+        Client clientFromRequest = account.getClient();
+        if(clientFromRequest == null) throw new AccountProcessingException("account must contain client info");
+        Integer clientFromRequestId = clientFromRequest.getId();
+        Optional<Client> clientFromDb;
+        if(clientFromRequestId==null){
+            clientFromDb = Optional.empty();
+            stopProcessIfAccountExist(account);
         } else {
-            if(account.getId()!=null) throw new AccountProcessingException("unable to create new client with existing account");
-                /*
-                to avoid "transient instance exception" in saveAccount method we must either save new client
-                before save account explicitly or add CascadeType.PERSIST to Client relation in account for Hibernate
-                perform save operation for us
-                but since new client have no Id, adding CascadeType.PERSIST will break work with already existing clients
-                with "detached entity passed to persist" exception
-                The exception comes as hibernate trying to persist associated products when you save reservation.
-                Persisting the products is only success if they have no id because id of Client is annotated
-                @GeneratedValue(strategy = GenerationType.SEQUENCE)
-                */
-            clientRepository.save(account.getClient());
+            clientFromDb = clientRepository.findById(clientFromRequestId);
         }
+        account.setClient(clientFromDb.orElse(clientRepository.save(clientFromRequest)));
         return accountRepository.save(account);
+    }
+
+    private void stopProcessIfAccountExist(Account account) {
+        if (account.getId()!=null && accountRepository.findById(account.getId()).isPresent()){
+            throw new AccountProcessingException("unable to move existing account to new client");
+        }
     }
 
     @Override
