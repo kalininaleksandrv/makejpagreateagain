@@ -11,7 +11,10 @@ import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
@@ -20,6 +23,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountQueryRepository accountQueryRepository;
     private final ClientRepository clientRepository;
 
-    private final EntityManager entityManager;
+    private final EntityManager entityManager; // TODO: 06.02.2023 move out to external @Repository
 
     @Override
     public Iterable<Account> findAll() {
@@ -157,6 +161,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    /*
+    1 in a concurrent modification regime @Transaction annotation itself does not help since isolation level by default is
+    ReadCommitted which allows 2nd transaction read value from account when 1st already start to change it
+    2 @Transactional(isolation = Isolation.REPEATABLE_READ) - correct behavior but a lot of exceptions,
+    can add @Retryable to all transactions eventually will be executed, don't forget to add @EnableRetry on Application.class
+     */
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Retryable(maxAttempts = 5, value = SQLException.class)
     public Account updateBalance(Integer fromAccountId, Integer toAccountId, BigDecimal changingValue) {
 
         Optional<Account> to = accountRepository.findById(toAccountId);
@@ -169,7 +181,6 @@ public class AccountServiceImpl implements AccountService {
         }
         from.setAmount(from.getAmount().subtract(changingValue));
         to.orElseThrow(() -> new AccountProcessingException("no such account available: " + toAccountId)).setAmount(to.get().getAmount().add(changingValue));
-        accountRepository.save(from);
-        return accountRepository.save(to.get());
+        return to.get();
     }
 }
