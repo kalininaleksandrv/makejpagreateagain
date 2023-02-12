@@ -7,7 +7,6 @@ import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
 import com.github.kalininaleksandrv.makejpagreateagain.model.projection.BlockingAccountProjectionDTO;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountQueryRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountRepository;
-import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -35,8 +34,7 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountQueryRepository accountQueryRepository;
-    private final ClientRepository clientRepository;
-
+    private final ClientService clientService;
     private final EntityManager entityManager; // TODO: 06.02.2023 move out to external @Repository
 
     @Override
@@ -54,27 +52,23 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public Account saveAccount(Account account) {
 
-        /*
-        1 new Client and new Account
-        2 existing Client and new Account
-        3 existing Client and Existing account
-        4 no such a case - new client and existing account
-         */
         // TODO: 12.02.2023 it must be unable to move existing account to another client
 
         Client clientFromRequest = account.getClient();
         if(clientFromRequest == null) throw new AccountProcessingException("account must contain client info");
-        Integer clientFromRequestId = clientFromRequest.getId();
-        Optional<Client> clientFromDb;
-        if(clientFromRequestId==null){
-            clientFromDb = Optional.empty();
+        Integer clientId = clientFromRequest.getId();
+        if(clientId==null){
             stopProcessIfAccountExist(account);
-        } else {
-            clientFromDb = clientRepository.findById(clientFromRequestId);
+            clientId = clientService.saveClient(account.getClient()).getId();
         }
-        account.setClient(clientFromDb.orElse(clientRepository.save(clientFromRequest)));
+        Optional<Client> clientFromDb = clientService.findClientById(clientId);
+        account.setClient(clientFromDb.orElseThrow(() -> new AccountProcessingException("unable to fetch client from DB")));
+        /*
+        we invoke save method even in @Transaction because we don't know if account is new or existed
+         */
         return accountRepository.save(account);
     }
 
