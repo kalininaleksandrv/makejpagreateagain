@@ -1,7 +1,6 @@
 package com.github.kalininaleksandrv.makejpagreateagain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +9,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@EqualsAndHashCode
-@Getter
-@Setter
 public class Client {
 
     @Id
@@ -32,12 +29,19 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_seq_gen")
     @SequenceGenerator(allocationSize = 1, name="client_seq_gen", sequenceName="client_id_seq")
     @Column(name = "id_client")
-    @EqualsAndHashCode.Exclude
-    @Setter(AccessLevel.NONE)
+    @Getter
     private Integer id;
 
+    @Getter
+    @Setter
     private String name;
+
+    @Getter
+    @Setter
     private int age;
+
+    @Getter
+    @Setter
     private BillingAddress billingAddress;
 
     // TODO: 26.06.2022 add business-key
@@ -47,6 +51,7 @@ public class Client {
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties("client")
     @OneToMany(mappedBy = "client", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @Setter
     private List<Account> accounts = new ArrayList<>();
 
     public List<Account> getAccounts() {
@@ -58,4 +63,32 @@ public class Client {
         account.setClient(this);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        if (age != client.age) return false;
+        if (!Objects.equals(name, client.name)) return false;
+        return Objects.equals(billingAddress, client.billingAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + age;
+        result = 31 * result + (billingAddress != null ? billingAddress.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
 }
