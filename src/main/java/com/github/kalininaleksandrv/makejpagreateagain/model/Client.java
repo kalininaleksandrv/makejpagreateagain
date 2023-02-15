@@ -1,7 +1,6 @@
 package com.github.kalininaleksandrv.makejpagreateagain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,10 +44,8 @@ public class Client {
     private BillingAddress billingAddress;
 
     // TODO: 26.06.2022 add business-key
-    // TODO: 05.08.2022 add custom getter and helper methods
     // TODO: 08.01.2023 add single and composite unique constrains
 
-    @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties("client")
     @OneToMany(mappedBy = "client", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @Setter

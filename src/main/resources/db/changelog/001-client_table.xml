@@ -35,7 +35,7 @@
             <column name="age" type="int4"/>
             <column name="city" type="varchar(32)"/>
             <column name="country" type="varchar(32)"/>
-            <column name="zipcode" type="varchar(8)"/>
+            <column name="zipcode" type="varchar(32)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
