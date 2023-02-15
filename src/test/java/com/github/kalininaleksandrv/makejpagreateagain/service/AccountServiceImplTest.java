@@ -97,20 +97,20 @@ class AccountServiceImplTest extends UserAndAccountBaseApplicationTests {
         account.setAmount(BigDecimal.valueOf(100));
         account.setCurrency(Currency.USD);
         Client savedClient = clientRepository.findByName("First Client");
-        savedClient.setName("name which must be ignored");
+        savedClient.setName("Name After Update");
         account.setClient(savedClient);
         Account res = accountService.saveAccount(account);
         assertEquals(100, res.getAmount().intValue());
-        assertEquals("First Client", res.getClient().getName());
+        assertEquals("Name After Update", res.getClient().getName());
     }
 
     @Test
     void updateExistingAccountWithExistingClient(){
         Account savedAccount = accountService.findAll().iterator().next();
-        savedAccount.setAmount(BigDecimal.valueOf(100000));
+        savedAccount.setAmount(BigDecimal.valueOf(1000000));
         savedAccount.getClient().setName("name which must be ignored");
         Account updatedAccount = accountService.saveAccount(savedAccount);
-        assertEquals(100000, updatedAccount.getAmount().intValue());
+        assertEquals(1000000, updatedAccount.getAmount().intValue());
         assertEquals(savedAccount.getId(), updatedAccount.getId());
         assertEquals(savedAccount.getClient().getId(), clientRepository.findAll().iterator().next().getId());
     }
