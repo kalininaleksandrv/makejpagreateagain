@@ -74,10 +74,7 @@ public class Client {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + age;
-        result = 31 * result + (billingAddress != null ? billingAddress.hashCode() : 0);
-        return result;
+        return getClass().hashCode();
     }
 
     @Override
@@ -85,7 +82,6 @@ public class Client {
         return "Client{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", age=" + age +
                 '}';
     }
 }

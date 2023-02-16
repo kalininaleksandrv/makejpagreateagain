@@ -10,7 +10,7 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 
 @JsonTypeInfo(use = NAME, defaultImpl = ZipCodeEmpty.class, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = ZipCodeEmpty.class, name = "ZipCodeEmpty"),
+        @JsonSubTypes.Type(value = ZipCodeEmpty.class, name = "undefined"),
         @JsonSubTypes.Type(value = ZipCodeRussian.class, name = "ZipCodeRussian"),
         @JsonSubTypes.Type(value = ZipCodeSpain.class, name = "ZipCodeSpain")
 })

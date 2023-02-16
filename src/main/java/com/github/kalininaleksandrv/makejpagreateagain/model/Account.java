@@ -9,7 +9,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @NamedEntityGraph(name = Account.ACCOUNT_CLIENT_ENTITY_GRAPH,
         attributeNodes = {@NamedAttributeNode(value = "client")})
@@ -67,39 +66,26 @@ public class Account {
     @Setter
     private LocalDateTime updated;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Account account = (Account) o;
-
-        if (blocked != account.blocked) return false;
-        if (!Objects.equals(amount, account.amount)) return false;
-        if (currency != account.currency) return false;
-        if (!Objects.equals(blockingReason, account.blockingReason))
-            return false;
-        if (!created.equals(account.created)) return false;
-        return updated.equals(account.updated);
+    public int hashCode() {
+        return getClass().hashCode();
     }
 
     @Override
-    public int hashCode() {
-        int result = amount != null ? amount.hashCode() : 0;
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (blocked ? 1 : 0);
-        result = 31 * result + (blockingReason != null ? blockingReason.hashCode() : 0);
-        result = 31 * result + created.hashCode();
-        result = 31 * result + updated.hashCode();
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Account other = (Account) obj;
+        return id != null && id.equals(other.getId());
     }
 
     @Override
     public String toString() {
         return "Account{" +
                 "id=" + id +
-                ", amount=" + amount +
-                ", currency=" + currency +
                 ", created=" + created +
                 ", updated=" + updated +
                 '}';

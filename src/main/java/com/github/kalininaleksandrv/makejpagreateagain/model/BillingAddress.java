@@ -1,11 +1,9 @@
 package com.github.kalininaleksandrv.makejpagreateagain.model;
 
 import com.github.kalininaleksandrv.makejpagreateagain.model.converter.ZipCodeConverter;
-import lombok.Data;
 
 import javax.persistence.*;
 
-@Data
 @Embeddable
 public class BillingAddress {
 
@@ -17,4 +15,12 @@ public class BillingAddress {
     @Convert(converter = ZipCodeConverter.class,
             attributeName = "zipcode")
     private ZipCode zipcode;
+
+    @Override
+    public String toString() {
+        return "BillingAddress{" +
+                "city=" + city +
+                ", zipcode=" + zipcode +
+                '}';
+    }
 }
