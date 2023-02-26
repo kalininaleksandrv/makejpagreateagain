@@ -2,8 +2,10 @@ package com.github.kalininaleksandrv.makejpagreateagain.service;
 
 import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
+import com.github.kalininaleksandrv.makejpagreateagain.model.ContactInfo;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientQueryRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
+import com.github.kalininaleksandrv.makejpagreateagain.repo.ContactInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,8 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
     private final ClientQueryRepository clientQueryRepository;
+
+    private final ContactInfoRepository contactInfoRepository;
 
     @Override
     public Client saveClient(Client client) {
@@ -58,6 +62,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<Client> getAllWithAmtMoreThen(BigDecimal amount) {
         return clientQueryRepository.getAllWithAmountMoreThen(amount);
+    }
+
+    @Override
+    public List<ContactInfo> findAllContacts() {
+        return contactInfoRepository.findAll();
     }
 
 }

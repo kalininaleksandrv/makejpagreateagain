@@ -1,6 +1,7 @@
 package com.github.kalininaleksandrv.makejpagreateagain.service;
 
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
+import com.github.kalininaleksandrv.makejpagreateagain.model.ContactInfo;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,4 +17,6 @@ public interface ClientService {
     Client saveClientWithAge(Client client, int age);
 
     List<Client> getAllWithAmtMoreThen(BigDecimal amount);
+
+    List<ContactInfo> findAllContacts();
 }

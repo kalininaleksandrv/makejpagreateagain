@@ -11,7 +11,16 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@NamedEntityGraph(name = Client.CLIENT_ACCOUNT_CONTACT_ENTITY_GRAPH,
+        attributeNodes = {
+                @NamedAttributeNode(value = "contact", subgraph = Client.CLIENT_AND_CONTACT),
+                @NamedAttributeNode(value = "accounts", subgraph = Client.CLIENT_AND_ACCOUNTS)
+        })
 public class Client {
+
+    public static final String CLIENT_ACCOUNT_CONTACT_ENTITY_GRAPH = "client-account-contact-entity-graph";
+    public static final String CLIENT_AND_CONTACT = "client-and-contact";
+    public static final String CLIENT_AND_ACCOUNTS = "client-and-accounts";
 
     @Id
     /*
@@ -38,6 +47,11 @@ public class Client {
     @Getter
     @Setter
     private int age;
+
+    @Getter
+    @Setter
+    @OneToOne(cascade = CascadeType.ALL)
+    private ContactInfo contact;
 
     @Getter
     @Setter

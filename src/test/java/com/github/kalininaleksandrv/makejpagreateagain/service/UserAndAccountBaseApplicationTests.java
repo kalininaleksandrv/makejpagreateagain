@@ -1,8 +1,6 @@
 package com.github.kalininaleksandrv.makejpagreateagain.service;
 
-import com.github.kalininaleksandrv.makejpagreateagain.model.Account;
-import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
-import com.github.kalininaleksandrv.makejpagreateagain.model.Currency;
+import com.github.kalininaleksandrv.makejpagreateagain.model.*;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.AccountRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -65,6 +64,11 @@ abstract class UserAndAccountBaseApplicationTests {
 		Client client = new Client();
 		client.setAge(20);
 		client.setName("First Client");
+		if(new Random().nextInt(3)%2==0){
+			client.setContact(new ContactInfoEmail("email@mail.com"));
+		} else {
+			client.setContact(new ContactInfoPhone("+74951111111"));
+		}
 		return client;
 	}
 
