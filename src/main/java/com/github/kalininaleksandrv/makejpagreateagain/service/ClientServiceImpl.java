@@ -7,6 +7,7 @@ import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientQueryRepositor
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ContactInfoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,6 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
     private final ClientQueryRepository clientQueryRepository;
-
     private final ContactInfoRepository contactInfoRepository;
 
     @Override

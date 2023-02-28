@@ -8,8 +8,9 @@ import javax.persistence.*;
 public class BillingAddress {
 
     @Embedded
-    @AttributeOverrides ({@AttributeOverride(name = "city", column = @Column(name = "CITY")),
-    @AttributeOverride(name = "country", column = @Column(name = "COUNTRY"))})
+    @AttributeOverrides (
+            {@AttributeOverride(name = "city", column = @Column(name = "CITY")),
+                    @AttributeOverride(name = "country", column = @Column(name = "COUNTRY"))})
     private City city;
 
     @Convert(converter = ZipCodeConverter.class,
