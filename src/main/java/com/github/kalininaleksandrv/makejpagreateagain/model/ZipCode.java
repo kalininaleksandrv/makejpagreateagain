@@ -18,7 +18,5 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 @Getter
 @Setter
 public abstract class ZipCode {
-
     private String value;
-
 }
