@@ -12,6 +12,8 @@ public interface ContactInfoRepository extends JpaRepository<ContactInfo, Intege
     /*
     we can use Contact interface instead of ContactInfo class
     to fetch all impl of this interface
+    but only related to particular table
+    for example if we make Account implements Contact it will not affect Account table here
     this method is not overriding of findAll()
      */
     @Query("select c from ContactInfo c")

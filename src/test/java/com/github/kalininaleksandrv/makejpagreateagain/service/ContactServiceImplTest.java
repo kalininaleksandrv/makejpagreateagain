@@ -41,7 +41,9 @@ class ContactServiceImplTest extends UserAndAccountBaseApplicationTests {
         to fetch all impl of this interface
         see query in repo impl
      */
-        List<Contacts> allContacts = contactService.findAllContacts();
-        assertEquals(10, allContacts.size());
+        List<Contacts> contacts = contactService.findAllContacts();
+        List<ContactInfo> contactInfos = contactService.findAllContactInfo();
+        assertEquals(10, contacts.size());
+        assertEquals(contacts.size(), contactInfos.size());
     }
 }
