@@ -19,7 +19,7 @@ for ContactInfoPhone, when all ContactInfo entity will be fetched - the 2 outer 
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ContactInfoEmail.class, name = "email"),
         @JsonSubTypes.Type(value = ContactInfoPhone.class, name = "phone")})
-public abstract class ContactInfo {
+public abstract class ContactInfo implements Contacts {
 
     @Getter
     @Id
