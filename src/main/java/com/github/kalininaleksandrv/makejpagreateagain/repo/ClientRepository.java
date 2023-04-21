@@ -10,12 +10,12 @@ public interface ClientRepository extends CrudRepository<Client, Integer> {
     Client findByName(String name);
 
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
-            value = Client.CLIENT_ACCOUNT_CONTACT_ENTITY_GRAPH)
+            value = Client.CLIENT_ACCOUNT_CONTACT_SCORING_ENTITY_GRAPH)
     @Override
     Iterable<Client> findAll();
 
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
-            value = Client.CLIENT_ACCOUNT_CONTACT_ENTITY_GRAPH)
+            value = Client.CLIENT_ACCOUNT_CONTACT_SCORING_ENTITY_GRAPH)
     @Override
     Optional<Client> findById(Integer id);
 }

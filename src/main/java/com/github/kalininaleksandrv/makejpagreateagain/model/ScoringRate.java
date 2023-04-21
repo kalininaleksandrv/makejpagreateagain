@@ -7,7 +7,15 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @NamedEntityGraph(name = ScoringRate.RATE_CLIENT_ENTITY_GRAPH,
-        attributeNodes = {@NamedAttributeNode(value = "client")})
+        attributeNodes = {@NamedAttributeNode(value = "client", subgraph = "client-subgraph")},
+        subgraphs = {
+                @NamedSubgraph(name = "client-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("accounts"),
+                                @NamedAttributeNode("contact")
+                        }
+                )
+        })
 @Entity
 @NoArgsConstructor
 public class ScoringRate {
@@ -15,15 +23,18 @@ public class ScoringRate {
     public static final String RATE_CLIENT_ENTITY_GRAPH = "rate-client-entity-graph";
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scoring_seq_gen")
+    @SequenceGenerator(allocationSize = 1, name="scoring_seq_gen", sequenceName="scoring_id_seq")
+    @Column(name = "id_scoring")
     @Getter
     private Integer id;
 
-    @OneToOne(
-            fetch = FetchType.LAZY,
-            optional = false,
-            cascade = CascadeType.ALL
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "CLIENT_SCORE",
+            joinColumns = @JoinColumn(name = "RATE_ID", nullable = false, unique = true),
+            inverseJoinColumns = @JoinColumn(name = "CLIENT_ID")
     )
-    @PrimaryKeyJoinColumn
     @Getter
     @Setter
     private Client client;
@@ -33,9 +44,8 @@ public class ScoringRate {
     private int rate;
 
     public ScoringRate(Client client, int scoringRate) {
-        this.id = client.getId();
         this.rate = scoringRate;
         this.client = client;
-        client.setScoringRate(this);
+        client.setRate(this);
     }
 }

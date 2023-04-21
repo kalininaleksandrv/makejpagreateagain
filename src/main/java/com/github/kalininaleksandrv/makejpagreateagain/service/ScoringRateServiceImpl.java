@@ -22,11 +22,11 @@ public class ScoringRateServiceImpl implements ScoringRateService{
     }
 
     @Override
-    public List<Integer> getByRateLessThen(Integer rate) {
+    public List<Client> getByRateLessThen(Integer rate) {
         List<ScoringRate> rates = scoringRateRepository.findByRateLessThanEqual(rate);
         return rates
                 .stream()
-                .map(i -> i.getClient().getId())
+                .map(ScoringRate::getClient)
                 .collect(Collectors.toList());
     }
 }

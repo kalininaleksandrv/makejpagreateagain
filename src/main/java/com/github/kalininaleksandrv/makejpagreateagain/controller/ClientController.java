@@ -59,7 +59,7 @@ public class ClientController {
     }
 
     @GetMapping(path = "client/rate/less/{value}")
-    public ResponseEntity<List<Integer>> rateLessOrEqual(@PathVariable Integer value){
+    public ResponseEntity<List<Client>> rateLessOrEqual(@PathVariable Integer value){
         return new ResponseEntity<>(scoringRateService.getByRateLessThen(value), HttpStatus.OK);
     }
 }

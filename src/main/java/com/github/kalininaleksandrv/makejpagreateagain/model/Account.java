@@ -11,7 +11,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @NamedEntityGraph(name = Account.ACCOUNT_CLIENT_ENTITY_GRAPH,
-        attributeNodes = {@NamedAttributeNode(value = "client")})
+        attributeNodes = {@NamedAttributeNode(value = "client", subgraph = "client-subgraph")},
+        subgraphs = {
+        @NamedSubgraph(name = "client-subgraph",
+                attributeNodes = {
+                        @NamedAttributeNode("rate"),
+                        @NamedAttributeNode("contact")
+                }
+        )})
 @Entity
 public class Account {
 

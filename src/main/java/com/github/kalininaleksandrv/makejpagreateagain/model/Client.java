@@ -11,16 +11,18 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@NamedEntityGraph(name = Client.CLIENT_ACCOUNT_CONTACT_ENTITY_GRAPH,
+@NamedEntityGraph(name = Client.CLIENT_ACCOUNT_CONTACT_SCORING_ENTITY_GRAPH,
         attributeNodes = {
                 @NamedAttributeNode(value = "contact", subgraph = Client.CLIENT_AND_CONTACT),
-                @NamedAttributeNode(value = "accounts", subgraph = Client.CLIENT_AND_ACCOUNTS)
+                @NamedAttributeNode(value = "accounts", subgraph = Client.CLIENT_AND_ACCOUNTS),
+                @NamedAttributeNode(value = "rate", subgraph = Client.CLIENT_AND_SCORING)
         })
 public class Client {
 
-    public static final String CLIENT_ACCOUNT_CONTACT_ENTITY_GRAPH = "client-account-contact-entity-graph";
+    public static final String CLIENT_ACCOUNT_CONTACT_SCORING_ENTITY_GRAPH = "client-account-contact-entity-graph";
     public static final String CLIENT_AND_CONTACT = "client-and-contact";
     public static final String CLIENT_AND_ACCOUNTS = "client-and-accounts";
+    public static final String CLIENT_AND_SCORING = "client-and-scoring";
 
     @Id
     /*
@@ -50,14 +52,19 @@ public class Client {
 
     @Getter
     @Setter
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ContactInfo contact;
 
     @Getter
     @Setter
-    @OneToOne(mappedBy = "client", cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "CLIENT_SCORE",
+            joinColumns = @JoinColumn(name = "CLIENT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "RATE_ID", nullable = false, unique = true)
+    )
     @JsonIgnoreProperties("client")
-    private ScoringRate scoringRate;
+    private ScoringRate rate;
 
     @Getter
     @Setter

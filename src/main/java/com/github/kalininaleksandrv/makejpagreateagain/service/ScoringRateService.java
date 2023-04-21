@@ -8,5 +8,5 @@ import java.util.List;
 public interface ScoringRateService {
 
     ScoringRate createOrUpdateScoringRate(Client client);
-    List<Integer> getByRateLessThen(Integer rate);
+    List<Client> getByRateLessThen(Integer rate);
 }
