@@ -3,6 +3,7 @@ package com.github.kalininaleksandrv.makejpagreateagain.controller;
 import com.github.kalininaleksandrv.makejpagreateagain.model.Client;
 import com.github.kalininaleksandrv.makejpagreateagain.model.ContactInfo;
 import com.github.kalininaleksandrv.makejpagreateagain.service.ClientService;
+import com.github.kalininaleksandrv.makejpagreateagain.service.ScoringRateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ import java.util.stream.StreamSupport;
 public class ClientController {
 
     private final ClientService clientService;
+
+    private final ScoringRateService scoringRateService;
 
     @GetMapping(path = "client/{id}")
     public ResponseEntity<Client> clientById(@PathVariable Integer id) {
@@ -53,5 +56,10 @@ public class ClientController {
     @GetMapping(path = "contacts")
     public ResponseEntity<List<ContactInfo>> contacts(){
         return new ResponseEntity<>(clientService.findAllContacts(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "client/rate/less/{value}")
+    public ResponseEntity<List<Integer>> rateLessOrEqual(@PathVariable Integer value){
+        return new ResponseEntity<>(scoringRateService.getByRateLessThen(value), HttpStatus.OK);
     }
 }

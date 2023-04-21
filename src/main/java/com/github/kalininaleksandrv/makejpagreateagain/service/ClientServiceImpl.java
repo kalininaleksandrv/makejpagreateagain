@@ -7,7 +7,6 @@ import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientQueryRepositor
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ClientRepository;
 import com.github.kalininaleksandrv.makejpagreateagain.repo.ContactInfoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +22,17 @@ public class ClientServiceImpl implements ClientService {
     private final ClientQueryRepository clientQueryRepository;
     private final ContactInfoRepository contactInfoRepository;
 
+    private final ScoringRateServiceImpl scoringRateService;
+
+
     @Override
     public Client saveClient(Client client) {
-
         for (Account a: client.getAccounts()) {
             a.setClient(client);
         }
-        return clientRepository.save(client);
+        Client savedClient = clientRepository.save(client);
+        scoringRateService.createOrUpdateScoringRate(savedClient);
+        return savedClient;
     }
 
     @Override

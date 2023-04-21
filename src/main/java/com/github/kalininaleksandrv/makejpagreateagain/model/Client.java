@@ -55,6 +55,12 @@ public class Client {
 
     @Getter
     @Setter
+    @OneToOne(mappedBy = "client", cascade = CascadeType.PERSIST)
+    @JsonIgnoreProperties("client")
+    private ScoringRate scoringRate;
+
+    @Getter
+    @Setter
     private BillingAddress billingAddress;
 
     // TODO: 26.06.2022 add business-key
