@@ -56,11 +56,10 @@ public class Client {
     @Setter
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     /*
-    we can have Client without scoring rate but not - scoring rate without Client
-    that's why CLIENT_ID is a PK - until we don't add ScoringRate to Client, the row in intermediate table
-    not have been created
-    but IF we create the row it must contain RATE_ID, that's why nullable is false
-    so, we save Client, and then we create and save ScoringRate with this Client
+    first we save ScoringRate, then the Client
+    since the CLIENT_ID is the no-null PK, we can save raw in intermediate table CLIENT_ID only after Client
+    will have been saved
+    after that we update ScoringRate table to add ClientId
      */
     @JoinTable(
             name = "CLIENT_SCORE",
