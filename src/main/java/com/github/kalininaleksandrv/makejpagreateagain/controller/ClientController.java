@@ -35,10 +35,8 @@ public class ClientController {
     public ResponseEntity<Iterable<Client>> clients() {
         var foundedClients = clientService.findAll();
         long count = StreamSupport.stream(foundedClients.spliterator(), false).count();
-        if(count==0){
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(foundedClients, HttpStatus.OK);
+        if(count>0) return new ResponseEntity<>(foundedClients, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
     @PostMapping(path = "client")
@@ -60,6 +58,8 @@ public class ClientController {
 
     @GetMapping(path = "client/rate/less/{value}")
     public ResponseEntity<List<Client>> rateLessOrEqual(@PathVariable Integer value){
-        return new ResponseEntity<>(scoringRateService.getByRateLessThen(value), HttpStatus.OK);
+        List<Client> founded = scoringRateService.getByRateLessThen(value);
+        if(founded.size()>0) return new ResponseEntity<>(founded, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }
