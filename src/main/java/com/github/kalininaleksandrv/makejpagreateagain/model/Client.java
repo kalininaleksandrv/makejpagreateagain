@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @NamedEntityGraph(name = Client.CLIENT_ACCOUNT_CONTACT_SCORING_ENTITY_GRAPH,
@@ -73,13 +70,19 @@ public class Client {
     // TODO: 26.06.2022 add business-key
     // TODO: 08.01.2023 add single and composite unique constrains
 
+    /*
+    we change list to collection because we don't need to save explicit order of stored elements in DB
+    for store elements in preserved order we can use list but in this case we should make the owing side of
+    relationship (many-to-one) read only (see pt. 9.5.3. Java Persistent in Action)
+    preserve order in a distinct column is rarely needed and can affect performance badly
+     */
     @JsonIgnoreProperties("client")
     @OneToMany(mappedBy = "client", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @Setter
-    private List<Account> accounts = new ArrayList<>();
+    private Collection<Account> accounts = new ArrayList<>();
 
-    public List<Account> getAccounts() {
-        return Collections.unmodifiableList(accounts);
+    public Collection<Account> getAccounts() {
+        return Collections.unmodifiableCollection(accounts);
     }
 
     public void addAccount(Account account) {
