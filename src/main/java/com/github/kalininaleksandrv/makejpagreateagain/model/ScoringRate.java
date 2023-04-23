@@ -30,11 +30,6 @@ public class ScoringRate {
     private Integer id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "CLIENT_SCORE",
-            joinColumns = @JoinColumn(name = "RATE_ID", nullable = false, unique = true),
-            inverseJoinColumns = @JoinColumn(name = "CLIENT_ID")
-    )
     @Getter
     @Setter
     private Client client;

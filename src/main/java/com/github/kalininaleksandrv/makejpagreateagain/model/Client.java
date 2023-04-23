@@ -54,11 +54,18 @@ public class Client {
 
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    /*
+    we can have Client without scoring rate but not - scoring rate without Client
+    that's why CLIENT_ID is a PK - until we don't add ScoringRate to Client, the row in intermediate table
+    not have been created
+    but IF we create the row it must contain RATE_ID, that's why nullable is false
+    so, we save Client, and then we create and save ScoringRate with this Client
+     */
     @JoinTable(
             name = "CLIENT_SCORE",
-            joinColumns = @JoinColumn(name = "CLIENT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "RATE_ID", nullable = false, unique = true)
+            joinColumns = @JoinColumn(name = "CLIENT_ID", unique = true, nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "RATE_ID")
     )
     @JsonIgnoreProperties("client")
     private ScoringRate rate;

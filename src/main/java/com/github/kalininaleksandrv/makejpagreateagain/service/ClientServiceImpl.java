@@ -26,13 +26,13 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
+    @Transactional
     public Client saveClient(Client client) {
         for (Account a: client.getAccounts()) {
             a.setClient(client);
         }
-        Client savedClient = clientRepository.save(client);
-        scoringRateService.createOrUpdateScoringRate(savedClient);
-        return savedClient;
+        client.setRate(scoringRateService.createOrUpdateScoringRate(client));
+        return clientRepository.save(client);
     }
 
     @Override

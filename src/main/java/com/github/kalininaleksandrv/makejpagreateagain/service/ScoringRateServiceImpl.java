@@ -17,8 +17,7 @@ public class ScoringRateServiceImpl implements ScoringRateService{
 
     @Override
     public ScoringRate createOrUpdateScoringRate(Client client) {
-        ScoringRate scoringRate = new ScoringRate(client, 1);
-        return scoringRateRepository.save(scoringRate);
+        return new ScoringRate(client, 999);
     }
 
     @Override
