@@ -76,6 +76,17 @@ public class Client {
     // TODO: 26.06.2022 add business-key
     // TODO: 08.01.2023 add single and composite unique constrains
 
+    @Getter
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "CLIENT_MANAGER",
+            joinColumns = @JoinColumn(name = "CLIENT_ID"),
+            inverseJoinColumns = @JoinColumn(nullable = false)
+    )
+    @JsonIgnoreProperties("client")
+    private Manager manager;
+
     /*
     we change list to collection because we don't need to save explicit order of stored elements in DB
     for store elements in preserved order we can use list but in this case we should make the owing side of
